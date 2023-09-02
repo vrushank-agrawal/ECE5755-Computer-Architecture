@@ -65,7 +65,7 @@ int main(int argc, char **argv) {
 
     output = mysort(input, n);
 
-    verify(output, n ); // keep this line commented out when profiling
+    // verify(output, n ); // keep this line commented out when profiling
 
     free(input);
     return 0;
