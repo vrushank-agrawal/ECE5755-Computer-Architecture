@@ -1,8 +1,14 @@
 #include "conv.h"
 
 // Basic convolution operation
-float ***convolution(float ***image, int numChannels, float ****kernel, float *biasData, int numFilters, int inputSize, int kernelSize)
-{
+float ***convolution(float ***image,
+                    int numChannels,
+                    float ****kernel,
+                    float *biasData,
+                    int numFilters,
+                    int inputSize,
+                    int kernelSize
+){
     int outputSize = inputSize - kernelSize + 1;
 
     // Allocate memory for the convolution output
@@ -18,6 +24,21 @@ float ***convolution(float ***image, int numChannels, float ****kernel, float *b
 
     // Perform the convolution operation
     /**** YOUR CODE HERE ****/
+    for (int i=0; i < numFilters; i++) {
+        for (int row=0; row < outputSize; row++) {
+            for (int col=0; col < outputSize; col++) {
+                // add the bias
+                convOutput[i][row][col] = biasData[i];
+                for (int channel=0; channel < numChannels; channel++) {
+                    for (int krow=0; krow < kernelSize; krow++) {
+                        for (int kcol=0; kcol < kernelSize; kcol++) {
+                            convOutput[i][row][col] += image[channel][row+krow][col+kcol] * kernel[i][channel][kcol][krow];
+                        }
+                    }
+                }
+            }
+        }
+    }
 
     return convOutput;
 }

@@ -14,10 +14,10 @@ TEST_EXECUTABLES = $(patsubst %.c,%,$(TEST_FILES))
 test: all_tests
 
 .PHONY: all_tests
-all_tests: 
-	$(CC) -o tests/$@ $(TEST_FILES) $(UNITY_FILES) $(COMMON_SRC) $(CFLAGS) $(HDF5_FLAGS) 
+all_tests:
+	$(CC) -o tests/$@ $(TEST_FILES) $(UNITY_FILES) $(COMMON_SRC) $(CFLAGS) $(HDF5_FLAGS)
 	./tests/$@
-	
+
 .PHONY: clean
 clean:
 	rm -f $(TEST_EXECUTABLES)

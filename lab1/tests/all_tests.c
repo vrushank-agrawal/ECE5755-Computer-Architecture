@@ -24,9 +24,13 @@ int main(void) {
 
     // Test linear
     RUN_TEST(test_linear);
+    RUN_TEST(test_linear_empty_input);
+    RUN_TEST(test_linear_empty_weights);
+    RUN_TEST(test_linear_empty_biases);
 
     // Test matrix_ops
     RUN_TEST(test_matmul_square_matrices);
+    RUN_TEST(test_matmul_square_matrices_random);
     RUN_TEST(test_matmul_incompatible_dimensions);
 
     return UNITY_END();
