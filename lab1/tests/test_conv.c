@@ -140,12 +140,14 @@ float ***get_expected_output_from_slides2(int numFilters, int outputSize)
     return expectedOutput;
 }
 
+/******** Random Generator ********/
+
 float ***get_image_values(int numChannels, int inputSize) {
     float ***image = malloc_image(numChannels, inputSize);
     for (int i=0; i < numChannels; i++) {
         for (int j=0; j < inputSize; j++) {
             for (int k=0; k < inputSize; k++) {
-                image[i][j][k] = i + j + k;
+                image[i][j][k] = (float)rand();
             }
         }
     }
@@ -158,7 +160,7 @@ float ****get_kernel_values(int numFilters, int numChannels, int kernelSize) {
         for (int j=0; j < numChannels; j++) {
             for (int k=0; k < kernelSize; k++) {
                 for (int l=0; l < kernelSize; l++) {
-                    kernel[i][j][k][l] = i + j + k + l;
+                    kernel[i][j][k][l] = (float)rand();
                 }
             }
         }
