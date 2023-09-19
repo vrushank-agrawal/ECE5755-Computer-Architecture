@@ -23,7 +23,6 @@ float ***convolution(float ***image,
     }
 
     // Perform the convolution operation
-    /**** YOUR CODE HERE ****/
     for (int i=0; i < numFilters; i++) {
         for (int row=0; row < outputSize; row++) {
             for (int col=0; col < outputSize; col++) {
