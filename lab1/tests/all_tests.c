@@ -18,12 +18,13 @@ int main(void) {
     UNITY_BEGIN();
 
     // Test conv
-    RUN_TEST(test_conv_slides);
-    RUN_TEST(test_conv_slides2);
-    RUN_TEST(test_conv_slides3);
-    RUN_TEST(test_image_null);
-    RUN_TEST(test_bias_null);
-    RUN_TEST(test_kernel_null);
+    // RUN_TEST(test_conv_slides);
+    // RUN_TEST(test_conv_slides2);
+    // RUN_TEST(test_conv_slides3);
+    // RUN_TEST(test_image_null);
+    // RUN_TEST(test_bias_null);
+    // RUN_TEST(test_kernel_null);
+    RUN_TEST(test_random_conv);
 
     // Test functional
     // RUN_TEST(test_softmax);

@@ -140,17 +140,20 @@ float ***get_expected_output_from_slides2(int numFilters, int outputSize)
     return expectedOutput;
 }
 
-void get_image_values(float ***image, int inputSize) {
-    for (int i=0; i < 3; i++) {
+float ***get_image_values(int numChannels, int inputSize) {
+    float ***image = malloc_image(numChannels, inputSize);
+    for (int i=0; i < numChannels; i++) {
         for (int j=0; j < inputSize; j++) {
             for (int k=0; k < inputSize; k++) {
                 image[i][j][k] = i + j + k;
             }
         }
     }
+    return image;
 }
 
-void get_kernel_values(float ****kernel, int numFilters, int numChannels, int kernelSize) {
+float ****get_kernel_values(int numFilters, int numChannels, int kernelSize) {
+    float ****kernel = malloc_kernel(numFilters, numChannels, kernelSize);
     for (int i=0; i < numFilters; i++) {
         for (int j=0; j < numChannels; j++) {
             for (int k=0; k < kernelSize; k++) {
@@ -160,6 +163,7 @@ void get_kernel_values(float ****kernel, int numFilters, int numChannels, int ke
             }
         }
     }
+    return kernel;
 }
 
 /***************************/
@@ -428,3 +432,90 @@ void test_conv_slides3(void)
 }
 
 /****** TEST RANDOM *******/
+
+float ***expected_convolution(float ***image, int numChannels, float ****kernel, float *biasData, int numFilters, int inputSize, int kernelSize)
+{
+    int outputSize = inputSize - kernelSize + 1;
+
+    // Allocate memory for the convolution output
+    float ***convOutput = malloc(numFilters * sizeof(*convOutput));
+    for (int i = 0; i < numFilters; i++){
+        convOutput[i] = malloc(outputSize * sizeof(*convOutput[i]));
+        for (int j = 0; j < outputSize; j++){
+            convOutput[i][j] = malloc(outputSize * sizeof(*convOutput[i][j]));
+        }
+    }
+
+    // Perform the convolution operation
+    for (int i=0; i < numFilters; i++) {
+        for (int row=0; row < outputSize; row++) {
+            for (int col=0; col < outputSize; col++) {
+                // add the bias
+                convOutput[i][row][col] = biasData[i];
+                for (int channel=0; channel < numChannels; channel++) {
+                    for (int krow=0; krow < kernelSize; krow++) {
+                        for (int kcol=0; kcol < kernelSize; kcol++) {
+                            convOutput[i][row][col] += image[channel][row+krow][col+kcol] * kernel[i][channel][kcol][krow];
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    return convOutput;
+}
+
+
+void test_random_conv(void)
+{
+
+    int random_tests = 0;
+    for (int filter=3; filter < 5; filter++)
+    {
+        for (int channel=1; channel < 3; channel++)
+        {
+            for (int inputSize=5; inputSize < 28; inputSize+=3)
+            {
+                for (int kernelSize=2; kernelSize < 4; kernelSize++)
+                {
+                    int outputSize = inputSize - kernelSize + 1;
+
+                    // get the image values
+                    float ***image = get_image_values(channel, inputSize);
+                    // get the kernel values
+                    float ****kernels = get_kernel_values(filter, channel, kernelSize);
+                    // get the bias value
+                    float *biasData = malloc(filter * sizeof(*biasData));
+                    for (int i=0; i < filter; i++) biasData[i] = i;
+                    // get the expected output
+                    float ***expectedOutput = expected_convolution(image, channel, kernels, biasData, filter, inputSize, kernelSize);
+
+                    // Run the convolution
+                    float ***convOutput = convolution(image, channel, kernels, biasData, filter, inputSize, kernelSize);
+
+                    // Check that the output is not NULL
+                    TEST_ASSERT_NOT_NULL(convOutput);
+                    // Check that the output is correct
+                    for (int i=0; i < filter; i++) {
+                        for (int row=0; row < outputSize; row++) {
+                            for (int col=0; col < outputSize; col++) {
+                                TEST_ASSERT_FLOAT_WITHIN(0.0001, expectedOutput[i][row][col], convOutput[i][row][col]);
+                            }
+                        }
+                    }
+
+                    free(biasData);
+                    free(kernels);
+                    free(image);
+                    free(expectedOutput);
+                    free(convOutput);
+
+                    random_tests++;
+                }
+            }
+        }
+    }
+
+    printf("\nNumber of random tests: %d\n", random_tests);
+}
