@@ -4,6 +4,8 @@
 #include "test_linear.h"
 #include "test_matrix_ops.h"
 
+// NOTE: all tests are self-contained so no need to call setUp or tearDown
+
 void setUp(void) {
     /* Code here will run before each test */
 }

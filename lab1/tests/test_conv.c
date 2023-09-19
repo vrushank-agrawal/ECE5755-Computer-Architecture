@@ -14,7 +14,6 @@
 void print_output(float ***output, int numFilters, int outputSize)
 {
     // print the output
-    printf("Output:\n");
     for (int i=0; i < numFilters; i++) {
         for (int row=0; row < outputSize; row++) {
             for (int col=0; col < outputSize; col++) {
@@ -91,11 +90,11 @@ float ***get_image_from_slide(int numChannels, int inputSize) {
 float ***get_image_from_slide2(int numChannels, int inputSize) {
     float ***image = malloc_image(numChannels, inputSize);
     set_first_image_channel(image, inputSize);
-    int value = 0;
+    int value = 1;
     for (int j = 0; j < 4; j++) {
         for (int k = 0; k < 4; k++) {
-            if (k%2 == 1) value++;
             image[1][j][k] = value;
+            if (k%2 == 1) value+=2;
         }
     }
     return image;
@@ -114,7 +113,7 @@ float ****get_kernel_from_slide2(int numFilters, int numChannels, int kernelSize
     float ****kernels = malloc_kernel(numFilters, numChannels, kernelSize);
     for (int j=0; j < 2; j++)
         for (int i=0; i < 4; i++)
-            kernels[0][j][i%2][i/2] = 1;
+            kernels[0][j][i%2][i/2] = j+1;
     return kernels;
 }
 
