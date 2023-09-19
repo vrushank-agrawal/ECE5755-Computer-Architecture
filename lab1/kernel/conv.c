@@ -9,6 +9,12 @@ float ***convolution(float ***image,
                     int inputSize,
                     int kernelSize
 ){
+
+    if (image == NULL || kernel == NULL || biasData == NULL) {
+        printf("Image, kernel, or bias is NULL.\n");
+        return NULL;
+    }
+
     int outputSize = inputSize - kernelSize + 1;
 
     // Allocate memory for the convolution output
