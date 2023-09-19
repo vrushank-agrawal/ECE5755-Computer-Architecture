@@ -3,6 +3,10 @@
 #include "../utils/data_utils.h"
 #include "test_conv.h"
 
+#ifdef DEBUG
+#define DEBUG_MODE 1
+#endif
+
 /***************************/
 /***** HELPER FUNCTIONS ****/
 /***************************/
@@ -53,16 +57,45 @@ float ****malloc_kernel(int numFilters, int numChannels, int kernelSize)
     return kernels;
 }
 
+float ***malloc_output(int numFilters, int outputSize)
+{
+    float ***output = malloc(numFilters * sizeof(*output));
+    for (int i=0; i < numFilters; i++) {
+        output[i] = malloc(outputSize * sizeof(*output[i]));
+        for (int j=0; j < outputSize; j++) {
+            output[i][j] = malloc(outputSize * sizeof(*output[i][j]));
+        }
+    }
+    return output;
+}
+
 /**********************/
 /***** SLIDE DATA *****/
 /**********************/
 
+void set_first_image_channel(float ***image, int inputSize) {
+    int value = 0;
+    for (int j=0; j < inputSize; j++) {
+        for (int k=0; k < inputSize; k++) {
+            image[0][j][k] = value++;
+        }
+    }
+}
+
 float ***get_image_from_slide(int numChannels, int inputSize) {
     float ***image = malloc_image(numChannels, inputSize);
+    set_first_image_channel(image, inputSize);
+    return image;
+}
+
+float ***get_image_from_slide2(int numChannels, int inputSize) {
+    float ***image = malloc_image(numChannels, inputSize);
+    set_first_image_channel(image, inputSize);
     int value = 0;
     for (int j = 0; j < 4; j++) {
         for (int k = 0; k < 4; k++) {
-            image[0][j][k] = value++;
+            if (k%2 == 1) value++;
+            image[1][j][k] = value;
         }
     }
     return image;
@@ -71,23 +104,23 @@ float ***get_image_from_slide(int numChannels, int inputSize) {
 float ****get_kernel_from_slide(int numFilters, int numChannels, int kernelSize)
 {
     float ****kernels = malloc_kernel(numFilters, numChannels, kernelSize);
-
     for (int i=0; i < 4; i++)
         kernels[0][0][i%2][i/2] = 1;
+    return kernels;
+}
 
+float ****get_kernel_from_slide2(int numFilters, int numChannels, int kernelSize)
+{
+    float ****kernels = malloc_kernel(numFilters, numChannels, kernelSize);
+    for (int j=0; j < 2; j++)
+        for (int i=0; i < 4; i++)
+            kernels[0][j][i%2][i/2] = 1;
     return kernels;
 }
 
 float ***get_expected_output_from_slides(int numFilters, int outputSize)
 {
-    float ***expectedOutput = malloc(numFilters * sizeof(*expectedOutput));
-    for (int i=0; i < numFilters; i++) {
-        expectedOutput[i] = malloc(outputSize * sizeof(*expectedOutput[i]));
-        for (int j=0; j < outputSize; j++) {
-            expectedOutput[i][j] = malloc(outputSize * sizeof(*expectedOutput[i][j]));
-        }
-    }
-
+    float ***expectedOutput = malloc_output(numFilters, outputSize);
     expectedOutput[0][0][0] = 12;
     expectedOutput[0][0][1] = 16;
     expectedOutput[0][0][2] = 20;
@@ -97,7 +130,21 @@ float ***get_expected_output_from_slides(int numFilters, int outputSize)
     expectedOutput[0][2][0] = 44;
     expectedOutput[0][2][1] = 48;
     expectedOutput[0][2][2] = 52;
+    return expectedOutput;
+}
 
+float ***get_expected_output_from_slides2(int numFilters, int outputSize)
+{
+    float ***expectedOutput = malloc_output(numFilters, outputSize);
+    expectedOutput[0][0][0] = 36;
+    expectedOutput[0][0][1] = 48;
+    expectedOutput[0][0][2] = 60;
+    expectedOutput[0][1][0] = 84;
+    expectedOutput[0][1][1] = 96;
+    expectedOutput[0][1][2] = 108;
+    expectedOutput[0][2][0] = 132;
+    expectedOutput[0][2][1] = 144;
+    expectedOutput[0][2][2] = 156;
     return expectedOutput;
 }
 
@@ -218,7 +265,6 @@ void test_kernel_null(void)
 
 /******* TEST SLIDES ********/
 
-
 void test_conv_slides(void)
 {
     int numChannels = 1;
@@ -242,7 +288,7 @@ void test_conv_slides(void)
 
     // Check that the output is not NULL
     TEST_ASSERT_NOT_NULL(convOutput);
-
+    // Check that the output is correct
     for (int i=0; i < numFilters; i++) {
         for (int row=0; row < outputSize; row++) {
             for (int col=0; col < outputSize; col++) {
@@ -255,54 +301,59 @@ void test_conv_slides(void)
     free(kernels);
     free(image);
     free(expectedOutput);
+    free(convOutput);
 }
 
-void test_conv(void)
+void test_conv_slides2(void)
 {
-    int numChannels = 3;
+    int numChannels = 2;
     int numFilters = 1;
-    int inputSize = 3;
-    int kernelSize = 3;
+    int inputSize = 4;
+    int kernelSize = 2;
     int outputSize = inputSize - kernelSize + 1;
 
     // get the image values
-    float ***image = malloc(sizeof(*image));
-    for (int i=0; i < numChannels; i++) {
-        image[i] = malloc(inputSize * sizeof(*image[i]));
-        for (int j=0; j < inputSize; j++) {
-            image[i][j] = malloc(inputSize * sizeof(*image[i][j]));
-        }
-    }
-    get_image_values(image, inputSize);
+    float ***image = get_image_from_slide2(numChannels, inputSize);
+
+    #ifdef DEBUG_MODE
+    printf("Image:\n");
+    print_output(image, numChannels, inputSize);
+    #endif
 
     // get the kernel values
-    float ****kernels = malloc(numFilters * sizeof(*kernels));
+    float ****kernels = get_kernel_from_slide2(numFilters, numChannels, kernelSize);
+
+    #ifdef DEBUG_MODE
+    printf("Kernels:\n");
     for (int i=0; i < numFilters; i++) {
-        kernels[i] = malloc(numChannels * sizeof(*kernels[i]));
-        for (int j=0; j < numChannels; j++) {
-            kernels[i][j] = malloc(kernelSize * sizeof(*kernels[i][j]));
-            for (int k=0; k < kernelSize; k++) {
-                kernels[i][j][k] = malloc(kernelSize * sizeof(*kernels[i][j][k]));
-            }
-        }
+        printf("Kernel filter %d:\n", i);
+        print_output(kernels[i], numChannels, kernelSize);
     }
-    get_kernel_values(kernels, numFilters, numChannels, kernelSize);
+    #endif
 
     // get the bias value
     float *biasData = malloc(outputSize * sizeof(*biasData));
-    for (int i=0; i < numFilters; i++) {
-        biasData[i] = i;
-    }
+    for (int i=0; i < numFilters; i++) biasData[i] = 2;
 
-    float expectedOutput[1][1][1] = {
-        {{  0.0 }}
-    };
+    // get the expected output
+    float ***expectedOutput = get_expected_output_from_slides2(numFilters, outputSize);
 
+    #ifdef DEBUG_MODE
+    printf("Expected Output:\n");
+    print_output(expectedOutput, numFilters, outputSize);
+    #endif
+
+    // Run the convolution
     float ***convOutput = convolution(image, numChannels, kernels, biasData, numFilters, inputSize, kernelSize);
+
+    #ifdef DEBUG_MODE
+    printf("Conv Output:\n");
+    print_output(convOutput, numFilters, outputSize);
+    #endif
 
     // Check that the output is not NULL
     TEST_ASSERT_NOT_NULL(convOutput);
-
+    // Check that the output is correct
     for (int i=0; i < numFilters; i++) {
         for (int row=0; row < outputSize; row++) {
             for (int col=0; col < outputSize; col++) {
@@ -315,6 +366,8 @@ void test_conv(void)
     free(biasData);
     free(kernels);
     free(image);
+    free(expectedOutput);
+    free(convOutput);
 }
 
 /****** TEST RANDOM *******/

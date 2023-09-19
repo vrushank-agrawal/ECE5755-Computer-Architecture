@@ -1,6 +1,8 @@
 CC = gcc
 CFLAGS = -I. -lm
 
+DEBUG =
+
 HDF5_FLAGS = -I/usr/include/hdf5/serial -L/usr/lib/x86_64-linux-gnu/hdf5/serial -lhdf5
 COMMON_HDRS = ./utils/data_utils.h ./kernel/conv.h ./kernel/functional.h ./kernel/matrix_ops.h ./kernel/linear.h
 COMMON_SRC = ./utils/data_utils.c ./kernel/conv.c ./kernel/functional.c ./kernel/matrix_ops.c ./kernel/linear.c
@@ -15,7 +17,7 @@ test: all_tests
 
 .PHONY: all_tests
 all_tests:
-	$(CC) -o tests/$@ $(TEST_FILES) $(UNITY_FILES) $(COMMON_SRC) $(CFLAGS) $(HDF5_FLAGS)
+	$(CC) -o tests/$@ $(TEST_FILES) $(UNITY_FILES) $(COMMON_SRC) $(CFLAGS) $(HDF5_FLAGS) $(DEBUG)
 	./tests/$@
 
 .PHONY: clean

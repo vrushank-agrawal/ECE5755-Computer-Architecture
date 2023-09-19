@@ -16,7 +16,8 @@ int main(void) {
     UNITY_BEGIN();
 
     // Test conv
-    RUN_TEST(test_conv_slides);
+    // RUN_TEST(test_conv_slides);
+    RUN_TEST(test_conv_slides2);
 
     // Test functional
     // RUN_TEST(test_softmax);
