@@ -1,9 +1,9 @@
 #ifndef TESTS_H
 #define TESTS_H
 
-#include <test_conv.h>
-#include <test_linear.h>
-#include <test_matrix_ops.h>
-#include <test_functional.h>
+#include <tests/test_conv.h>
+#include <tests/test_linear.h>
+#include <tests/test_matrix_ops.h>
+#include <tests/test_functional.h>
 
 #endif // TESTS_H

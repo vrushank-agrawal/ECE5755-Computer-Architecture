@@ -18,7 +18,7 @@ test: all_tests
 
 .PHONY: main
 main: main.c $(PROFILE_TEST_FILES) $(COMMON_SRC) $(COMMON_HDRS)
-	$(CC) -o main main.c $(PROFILE_TEST_FILES) $(COMMON_SRC) $(COMMON_HDRS) $(HDF5_FLAGS) $(CFLAGS) -DPROFILE
+	$(CC) -o main main.c $(PROFILE_TEST_FILES) $(UNITY_FILES) $(COMMON_SRC) $(COMMON_HDRS) $(HDF5_FLAGS) $(CFLAGS) -DPROFILING
 
 .PHONY: all_tests
 all_tests:

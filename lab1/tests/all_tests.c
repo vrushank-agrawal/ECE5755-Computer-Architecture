@@ -30,11 +30,12 @@ int main(void) {
     // RUN_TEST(test_softmax);
     // RUN_TEST(test_softmax_large);
     // RUN_TEST(test_softmax_long);
-    RUN_TEST(test_relu);
+    // RUN_TEST(test_relu);
     // RUN_TEST(test_relu_large);
+    // RUN_TEST(test_relu_large_neg);
 
     // Test linear
-    // RUN_TEST(test_linear);
+    RUN_TEST(test_linear);
     // RUN_TEST(test_linear_very_large);
     // RUN_TEST(test_linear_very_large_very_long);
     // RUN_TEST(test_linear_empty_input);
@@ -44,6 +45,8 @@ int main(void) {
 
     // Test matrix_ops
     // RUN_TEST(test_matmul_square_matrices);
+    // RUN_TEST(test_matmul);
+    // RUN_TEST(test_matmul_large);
     // RUN_TEST(test_matmul_square_matrices_random);
     // RUN_TEST(test_matmul_incompatible_dimensions);
 

@@ -7,6 +7,10 @@
 #define DEBUG_MODE 1
 #endif
 
+#ifdef PROFILING
+#define PROFILE 1
+#endif
+
 /***************************/
 /***** HELPER FUNCTIONS ****/
 /***************************/
@@ -278,12 +282,14 @@ void test_conv_slides(void)
     // get the bias value
     float *biasData = malloc(outputSize * sizeof(*biasData));
     for (int i=0; i < numFilters; i++) biasData[i] = 2;
-    // get the expected output
-    float ***expectedOutput = get_expected_output_from_slides(numFilters, outputSize);
 
     // Run the convolution
     float ***convOutput = convolution(image, numChannels, kernels, biasData, numFilters, inputSize, kernelSize);
 
+    #ifndef PROFILE
+    printf("RUNNING UNITY TEST\n");
+    // get the expected output
+    float ***expectedOutput = get_expected_output_from_slides(numFilters, outputSize);
     // Check that the output is not NULL
     TEST_ASSERT_NOT_NULL(convOutput);
     // Check that the output is correct
@@ -294,6 +300,7 @@ void test_conv_slides(void)
             }
         }
     }
+    #endif
 
     free(biasData);
     free(kernels);
@@ -333,20 +340,22 @@ void test_conv_slides2(void)
     float *biasData = malloc(outputSize * sizeof(*biasData));
     for (int i=0; i < numFilters; i++) biasData[i] = 2;
 
-    // get the expected output
-    float ***expectedOutput = get_expected_output_from_slides2(numFilters, outputSize);
-
-    #ifdef DEBUG_MODE
-    printf("Expected Output:\n");
-    print_output(expectedOutput, numFilters, outputSize);
-    #endif
-
     // Run the convolution
     float ***convOutput = convolution(image, numChannels, kernels, biasData, numFilters, inputSize, kernelSize);
 
     #ifdef DEBUG_MODE
     printf("Conv Output:\n");
     print_output(convOutput, numFilters, outputSize);
+    #endif
+
+    #ifndef PROFILE
+    printf("RUNNING UNITY TEST\n");
+    // get the expected output
+    float ***expectedOutput = get_expected_output_from_slides2(numFilters, outputSize);
+
+    #ifdef DEBUG_MODE
+    printf("Expected Output:\n");
+    print_output(expectedOutput, numFilters, outputSize);
     #endif
 
     // Check that the output is not NULL
@@ -359,7 +368,7 @@ void test_conv_slides2(void)
             }
         }
     }
-
+    #endif
 
     free(biasData);
     free(kernels);
@@ -399,14 +408,6 @@ void test_conv_slides3(void)
     float *biasData = malloc(outputSize * sizeof(*biasData));
     for (int i=0; i < numFilters; i++) biasData[i] = 2;
 
-    // get the expected output
-    float ***expectedOutput = get_expected_output_from_slides2(numFilters, outputSize);
-
-    #ifdef DEBUG_MODE
-    printf("Expected Output:\n");
-    print_output(expectedOutput, numFilters, outputSize);
-    #endif
-
     // Run the convolution
     float ***convOutput = convolution(image, numChannels, kernels, biasData, numFilters, inputSize, kernelSize);
 
@@ -415,6 +416,15 @@ void test_conv_slides3(void)
     print_output(convOutput, numFilters, outputSize);
     #endif
 
+    #ifndef PROFILE
+    printf("RUNNING UNITY TEST\n");
+    // get the expected output
+    float ***expectedOutput = get_expected_output_from_slides2(numFilters, outputSize);
+
+    #ifdef DEBUG_MODE
+    printf("Expected Output:\n");
+    print_output(expectedOutput, numFilters, outputSize);
+    #endif
     // Check that the output is not NULL
     TEST_ASSERT_NOT_NULL(convOutput);
     // Check that the output is correct
@@ -425,6 +435,7 @@ void test_conv_slides3(void)
             }
         }
     }
+    #endif
 
     free(biasData);
     free(kernels);

@@ -1,4 +1,14 @@
 #include <tests/tests.h>
+#include <stdio.h>
+#include <stdlib.h>
+
+void setUp(void) {
+    /* Code here will run before each test */
+}
+
+void tearDown(void) {
+    /* Code here will run after each test */
+}
 
 int main(int argc, char **argv)
 {
@@ -28,11 +38,14 @@ int main(int argc, char **argv)
             test_relu();
         } else if (test_num == 2) {
             test_relu_large();
+        } else if (test_num == 3) {
+            test_relu_large_neg();
         } else {
             printf("Invalid test number\n");
             return 1;
         }
-    } else if (fn_num == 3) {
+    } else
+    if (fn_num == 3) {
         if (test_num == 1) {
             test_linear();
         } else if (test_num == 2) {
@@ -47,9 +60,7 @@ int main(int argc, char **argv)
         if (test_num == 1) {
             test_matmul_square_matrices();
         } else if (test_num == 2) {
-            test_matmul_square_matrices_random();
         } else if (test_num == 3) {
-            test_matmul_incompatible_dimensions();
         } else {
             printf("Invalid test number\n");
             return 1;
@@ -59,6 +70,8 @@ int main(int argc, char **argv)
             test_softmax();
         } else if (test_num == 2) {
             test_softmax_large();
+        } else if (test_num == 3) {
+            test_softmax_long();
         } else {
             printf("Invalid test number\n");
             return 1;
