@@ -4,6 +4,8 @@
 float* generate_random_vector(int size);
 
 void test_linear(void);
+void test_linear_very_large(void);
+void test_linear_very_large_very_long(void);
 void test_linear_empty_input(void);
 void test_linear_empty_weights(void);
 void test_linear_empty_biases(void);

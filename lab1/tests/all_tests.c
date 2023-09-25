@@ -24,17 +24,23 @@ int main(void) {
     // RUN_TEST(test_image_null);
     // RUN_TEST(test_bias_null);
     // RUN_TEST(test_kernel_null);
-    RUN_TEST(test_random_conv);
+    // RUN_TEST(test_random_conv);
 
     // Test functional
     // RUN_TEST(test_softmax);
-    // RUN_TEST(test_relu);
+    // RUN_TEST(test_softmax_large);
+    // RUN_TEST(test_softmax_long);
+    RUN_TEST(test_relu);
+    // RUN_TEST(test_relu_large);
 
     // Test linear
     // RUN_TEST(test_linear);
+    // RUN_TEST(test_linear_very_large);
+    // RUN_TEST(test_linear_very_large_very_long);
     // RUN_TEST(test_linear_empty_input);
     // RUN_TEST(test_linear_empty_weights);
     // RUN_TEST(test_linear_empty_biases);
+    // RUN_TEST(test_linear_random_values);
 
     // Test matrix_ops
     // RUN_TEST(test_matmul_square_matrices);

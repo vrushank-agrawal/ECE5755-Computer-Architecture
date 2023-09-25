@@ -47,6 +47,72 @@ void test_linear(void) {
 
     // Cleanup
     free(output);
+    free(weights);
+}
+
+void test_linear_very_large(void) {
+    float input[5000];
+    for (int i = 0; i < 5000; i++) {
+        input[i] = i;
+    }
+
+    float **weights = (float **)malloc(5000 * sizeof(float *));
+    for (int i = 0; i < 5000; i++) {
+        weights[i] = (float *)malloc(5000 * sizeof(float));
+        for (int j = 0; j < 1; j++) {
+            weights[i][j] = 1;
+        }
+    }
+
+    float biases[] = {0};
+    // for (int i = 0; i < 5000; i++) {
+    //     biases[i] = 0;
+    // }
+
+    float *output = linear(input, weights, biases, 5000, 1);
+
+    TEST_ASSERT_NOT_NULL(output);
+
+    for (int i = 0; i < 1; i++) {
+        TEST_ASSERT_FLOAT_WITHIN(1e-6, 12497500, output[i]);
+    }
+
+    // Cleanup
+    free(output);
+    free(weights);
+}
+
+
+void test_linear_very_large_very_long(void) {
+    float input[5000];
+    for (int i = 0; i < 5000; i++) {
+        input[i] = i;
+    }
+
+    float **weights = (float **)malloc(5000 * sizeof(float *));
+    for (int i = 0; i < 5000; i++) {
+        weights[i] = (float *)malloc(5000 * sizeof(float));
+        for (int j = 0; j < 5000; j++) {
+            weights[i][j] = 1;
+        }
+    }
+
+    float biases[5000];
+    for (int i = 0; i < 5000; i++) {
+        biases[i] = 1000;
+    }
+
+    float *output = linear(input, weights, biases, 5000, 5000);
+
+    TEST_ASSERT_NOT_NULL(output);
+
+    for (int i = 0; i < 5000; i++) {
+        TEST_ASSERT_FLOAT_WITHIN(1e-6, 12498500, output[i]);
+    }
+
+    // Cleanup
+    free(output);
+    free(weights);
 }
 
 void test_linear_empty_input(void) {
@@ -84,6 +150,7 @@ void test_linear_empty_biases(void) {
 
 void test_linear_random_values(void) {
 
+    int tests = 0;
     for (int i = 1; i < 10; i++) {
         for (int a = 0; a < 5; a++) {
             float *input = generate_random_vector(i);
@@ -104,6 +171,8 @@ void test_linear_random_values(void) {
             cleanup_matrix(weights, i);
             free(biases);
             free(output);
+            tests++;
         }
     }
+    printf("Ran %d random tests\n", tests);
 }
