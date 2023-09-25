@@ -15,6 +15,16 @@ float ***convolution(float ***image,
         return NULL;
     }
 
+    if (kernelSize <= 0 || inputSize <= 0 || numChannels <= 0 || numFilters <= 0) {
+        printf("Invalid input size.\n");
+        return NULL;
+    }
+
+    if (kernelSize > inputSize) {
+        printf("Kernel size cannot be larger than input size.\n");
+        return NULL;
+    }
+
     int outputSize = inputSize - kernelSize + 1;
 
     // Allocate memory for the convolution output
