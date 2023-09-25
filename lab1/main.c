@@ -60,7 +60,9 @@ int main(int argc, char **argv)
         if (test_num == 1) {
             test_matmul_square_matrices();
         } else if (test_num == 2) {
+            test_matmul();
         } else if (test_num == 3) {
+            test_matmul_large();
         } else {
             printf("Invalid test number\n");
             return 1;

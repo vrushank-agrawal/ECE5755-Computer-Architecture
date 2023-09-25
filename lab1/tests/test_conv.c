@@ -300,12 +300,12 @@ void test_conv_slides(void)
             }
         }
     }
+    free(expectedOutput);
     #endif
 
     free(biasData);
     free(kernels);
     free(image);
-    free(expectedOutput);
     free(convOutput);
 }
 
@@ -368,12 +368,12 @@ void test_conv_slides2(void)
             }
         }
     }
+    free(expectedOutput);
     #endif
 
     free(biasData);
     free(kernels);
     free(image);
-    free(expectedOutput);
     free(convOutput);
 }
 
@@ -435,12 +435,12 @@ void test_conv_slides3(void)
             }
         }
     }
+    free(expectedOutput);
     #endif
 
     free(biasData);
     free(kernels);
     free(image);
-    free(expectedOutput);
     free(convOutput);
 }
 
