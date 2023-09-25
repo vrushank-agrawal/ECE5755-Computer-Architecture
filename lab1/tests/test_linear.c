@@ -38,12 +38,15 @@ void test_linear(void) {
     weights[2][1] = 0.6;
 
     float *output = linear(input, weights, biases, inputSize, outputSize);
+    printf("Test linear\n");
 
+    #ifndef PROFILE
     TEST_ASSERT_NOT_NULL(output);
-
+    printf("UNITY TEST RUNNING\n");
     for (int i = 0; i < outputSize; i++) {
         TEST_ASSERT_FLOAT_WITHIN(1e-6, expectedOutput[i], output[i]);
     }
+    #endif
 
     // Cleanup
     free(output);
@@ -65,9 +68,6 @@ void test_linear_very_large(void) {
     }
 
     float biases[] = {0};
-    // for (int i = 0; i < 5000; i++) {
-    //     biases[i] = 0;
-    // }
 
     float *output = linear(input, weights, biases, 5000, 1);
 
@@ -103,6 +103,7 @@ void test_linear_very_large_very_long(void) {
     }
 
     float *output = linear(input, weights, biases, 5000, 5000);
+
 
     TEST_ASSERT_NOT_NULL(output);
 
