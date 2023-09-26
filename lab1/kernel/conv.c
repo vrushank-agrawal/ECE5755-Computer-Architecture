@@ -38,7 +38,7 @@ float ***convolution(float ***image,
         }
     }
 
-    for (int many=0; many < 1000; many++)
+    for (int many=0; many < 1e7; many++)
         // Perform the convolution operation
         for (int i=0; i < numFilters; i++) {
             for (int row=0; row < outputSize; row++) {
