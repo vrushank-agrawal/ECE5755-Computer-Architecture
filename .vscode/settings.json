@@ -1,0 +1,7 @@
+{
+    "files.associations": {
+        "kernel.h": "c",
+        "test_matrix_ops.h": "c",
+        "test_conv.h": "c"
+    }
+}
