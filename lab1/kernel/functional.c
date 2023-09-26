@@ -8,22 +8,23 @@ float relu(float x)
 
 void applyRelu(float *input, int inputSize)
 {
-    for (int i = 0; i < inputSize; i++)
-    {
-        input[i] = relu(input[i]);
-    }
+    for (int many=0; many < 1000; many++)
+        for (int i = 0; i < inputSize; i++)
+            input[i] = relu(input[i]);
 }
 
 float *softmax(float *input, int inputSize)
 {
     float *softmaxOutput = malloc(inputSize * sizeof(*softmaxOutput));
 
-    float d = 0.;
-    for (int i=0; i < inputSize; i++)
-        d += expf(input[i]);
+    for (int many=0; many < 1000; many++) {
+        float d = 0.;
+        for (int i=0; i < inputSize; i++)
+            d += expf(input[i]);
 
-    for (int i=0; i < inputSize; i++)
-        softmaxOutput[i] = expf(input[i]) / d;
+        for (int i=0; i < inputSize; i++)
+            softmaxOutput[i] = expf(input[i]) / d;
+    }
 
     return softmaxOutput;
 }

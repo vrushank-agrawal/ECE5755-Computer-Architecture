@@ -27,7 +27,7 @@ int main(void) {
     // RUN_TEST(test_random_conv);
 
     // Test functional
-    // RUN_TEST(test_softmax);
+    RUN_TEST(test_softmax);
     // RUN_TEST(test_softmax_large);
     // RUN_TEST(test_softmax_long);
     // RUN_TEST(test_relu);
@@ -35,7 +35,7 @@ int main(void) {
     // RUN_TEST(test_relu_large_neg);
 
     // Test linear
-    RUN_TEST(test_linear);
+    // RUN_TEST(test_linear);
     // RUN_TEST(test_linear_very_large);
     // RUN_TEST(test_linear_very_large_very_long);
     // RUN_TEST(test_linear_empty_input);

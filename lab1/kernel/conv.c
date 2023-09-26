@@ -38,22 +38,23 @@ float ***convolution(float ***image,
         }
     }
 
-    // Perform the convolution operation
-    for (int i=0; i < numFilters; i++) {
-        for (int row=0; row < outputSize; row++) {
-            for (int col=0; col < outputSize; col++) {
-                // add the bias
-                convOutput[i][row][col] = biasData[i];
-                for (int channel=0; channel < numChannels; channel++) {
-                    for (int krow=0; krow < kernelSize; krow++) {
-                        for (int kcol=0; kcol < kernelSize; kcol++) {
-                            convOutput[i][row][col] += image[channel][row+krow][col+kcol] * kernel[i][channel][kcol][krow];
+    for (int many=0; many < 1000; many++)
+        // Perform the convolution operation
+        for (int i=0; i < numFilters; i++) {
+            for (int row=0; row < outputSize; row++) {
+                for (int col=0; col < outputSize; col++) {
+                    // add the bias
+                    convOutput[i][row][col] = biasData[i];
+                    for (int channel=0; channel < numChannels; channel++) {
+                        for (int krow=0; krow < kernelSize; krow++) {
+                            for (int kcol=0; kcol < kernelSize; kcol++) {
+                                convOutput[i][row][col] += image[channel][row+krow][col+kcol] * kernel[i][channel][kcol][krow];
+                            }
                         }
                     }
                 }
             }
         }
-    }
 
     return convOutput;
 }
