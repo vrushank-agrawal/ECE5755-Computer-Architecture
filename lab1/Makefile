@@ -27,4 +27,4 @@ all_tests:
 
 .PHONY: clean
 clean:
-	rm -f $(TEST_EXECUTABLES)
+	rm -f $(TEST_EXECUTABLES) main
