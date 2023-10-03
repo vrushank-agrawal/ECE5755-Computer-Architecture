@@ -12,16 +12,16 @@ void tearDown(void) {
 
 int main(int argc, char **argv)
 {
-    if (argc != 2) {
+    if (argc != 3) {
         // printf("Usage: ./main <fn_num> <test_num>\n");
         // printf("<fn_num> are: 1 (conv), 2 (relu), 3 (linear), 4 (matmul), 5 (softmax)\n");
         // printf("<test_num> are: 1, 2, 3\n");
         printf("<Block_Size>\n");
+        printf("<fn> 1: Matmul , 2: matmul_blocking\n");
         return 1;
     }
 
-    test_matmul_random(atoi(argv[1]));
-
+    test_matmul_random(atoi(argv[1]), atoi(argv[2]));
     return 0;
 
     int fn_num = atoi(argv[1]);

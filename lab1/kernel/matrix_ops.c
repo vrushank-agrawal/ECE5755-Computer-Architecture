@@ -17,8 +17,12 @@ float **matmul(float **A, float **B, int A_rows, int A_cols, int B_rows, int B_c
         C[i] = (float *)malloc(B_cols * sizeof(float));
     }
 
+    int iter = 1;
+    clock_t start, end;
+    start = clock();
+
     /**** YOUR CODE HERE ****/
-    for (int many=0; many < 100000; many++)
+    for (int many=0; many < iter; many++)
         for (int i=0; i < A_rows; i++) {
             for (int j=0; j < B_cols; j++) {
                 C[i][j] = 0;
@@ -27,6 +31,13 @@ float **matmul(float **A, float **B, int A_rows, int A_cols, int B_rows, int B_c
                 }
             }
         }
+
+    end = clock();
+    double run_time = (double)(end - start);
+    double cpu_time = (run_time) / CLOCKS_PER_SEC;
+
+    printf("A: %i x %i\nB: %i x %i\n", A_rows, A_cols, B_rows, B_cols);
+    printf("Matmul CPU time used: %f seconds\n", cpu_time);
 
     return C;
 }
@@ -92,7 +103,7 @@ float **matmul_blocking(float **A,
     double run_time = (double)(end - start);
     double cpu_time = (run_time) / CLOCKS_PER_SEC;
 
-    printf("Run time: %f micro_seconds\n", run_time);
+    printf("A: %i x %i\nB: %i x %i\n", A_rows, A_cols, B_rows, B_cols);
     printf("CPU time used: %f seconds\n", cpu_time);
 
     return C;

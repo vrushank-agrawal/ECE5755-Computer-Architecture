@@ -182,15 +182,19 @@ void test_matmul_large(void) {
 }
 
 // void test_matmul_random(void)
-void test_matmul_random(int block_size)
+void test_matmul_random(int block_size, int fn)
 {
     /**** YOUR CODE HERE ****/
     int i = 1000;
     int a = 1005;
     float **A = generate_random_matrix(i, a);
     float **B = generate_random_matrix(a, i);
-    // float **C = matmul_blocking(A, B, i, a, a, i, -1);
-    float **C = matmul_blocking(A, B, i, a, a, i, block_size);
+    float **C;
+    if (fn == 1)
+        // C = matmul_blocking(A, B, i, a, a, i, -1);
+        C = matmul_blocking(A, B, i, a, a, i, block_size);
+    else
+        C = matmul(A, B, i, a, a, i);
 
     #ifndef PROFILE
     for (int j=0; j < i; j++) {
