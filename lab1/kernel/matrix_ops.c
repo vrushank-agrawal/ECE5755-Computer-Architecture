@@ -76,17 +76,17 @@ float **matmul_blocking(float **A,
         block_size = 16;
     printf("block_size = %i\n", block_size);
 
-    int iter = 1;
+    int iter = 200;
     clock_t start, end;
     start = clock();
 
     for (int many=0; many < iter; many++) {
         // initialize to zero
-        // for (int i = 0; i < A_rows; i++) {
-        //     for (int j = 0; j < B_cols; j++) {
-        //         C[i][j] = 0;
-        //     }
-        // }
+        for (int i = 0; i < A_rows; i++) {
+            for (int j = 0; j < B_cols; j++) {
+                C[i][j] = 0;
+            }
+        }
         for (int i = 0; i < A_rows; i += block_size) {
             for (int j = 0; j < B_cols; j += block_size) {
                 // Initialize the output to zero
