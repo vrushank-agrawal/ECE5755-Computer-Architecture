@@ -81,6 +81,12 @@ float **matmul_blocking(float **A,
     start = clock();
 
     for (int many=0; many < iter; many++) {
+        // initialize to zero
+        // for (int i = 0; i < A_rows; i++) {
+        //     for (int j = 0; j < B_cols; j++) {
+        //         C[i][j] = 0;
+        //     }
+        // }
         for (int i = 0; i < A_rows; i += block_size) {
             for (int j = 0; j < B_cols; j += block_size) {
                 // Initialize the output to zero
@@ -104,7 +110,7 @@ float **matmul_blocking(float **A,
     double cpu_time = (run_time) / CLOCKS_PER_SEC;
 
     printf("A: %i x %i\nB: %i x %i\n", A_rows, A_cols, B_rows, B_cols);
-    printf("CPU time used: %f seconds\n", cpu_time);
+    printf("Matmul Blocking CPU time used: %f seconds\n", cpu_time);
 
     return C;
 }
