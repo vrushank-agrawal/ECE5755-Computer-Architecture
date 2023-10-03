@@ -4,6 +4,10 @@
 #include "test_linear.h"
 #include "test_matrix_ops.h"
 
+#ifndef BLOCK_SIZE
+#define BLOCK_SIZE 1
+#endif
+
 // NOTE: all tests are self-contained so no need to call setUp or tearDown
 
 void setUp(void) {
@@ -46,8 +50,8 @@ int main(void) {
     // Test matrix_ops
     // RUN_TEST(test_matmul_square_matrices);
     // RUN_TEST(test_matmul);
-    RUN_TEST(test_matmul_large);
-    // RUN_TEST(test_matmul_square_matrices_random);
+    // RUN_TEST(test_matmul_large);
+    RUN_TEST(test_matmul_random);
     // RUN_TEST(test_matmul_incompatible_dimensions);
 
     return UNITY_END();

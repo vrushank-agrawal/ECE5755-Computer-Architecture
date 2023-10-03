@@ -167,7 +167,7 @@ void test_linear_random_values(void) {
     for (int i = 1; i < 10; i++) {
         for (int a = 0; a < 5; a++) {
             float *input = generate_random_vector(i);
-            float **weights = generate_random_sq_matrix(i);
+            float **weights = generate_random_matrix(i, i);
             float *biases = generate_random_vector(i);
             float *output = linear(input, weights, biases, i, i);
 

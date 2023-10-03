@@ -2,6 +2,10 @@
 #include <stdio.h>
 #include <time.h>
 
+#ifndef BLOCK_SIZE
+#define BLOCK_SIZE 1
+#endif
+
 float **matmul(float **A, float **B, int A_rows, int A_cols, int B_rows, int B_cols) {
     if (A_cols != B_rows) {
         printf("Matrix dimensions incompatible for multiplication.\n");
@@ -32,7 +36,9 @@ float **matmul_blocking(float **A,
                         int A_rows,
                         int A_cols,
                         int B_rows,
-                        int B_cols)
+                        int B_cols,
+                        int block
+                        )
 {
     if (A_cols != B_rows) {
         printf("Matrix dimensions incompatible for multiplication.\n");
@@ -49,8 +55,14 @@ float **matmul_blocking(float **A,
         C[i] = (float *)malloc(B_cols * sizeof(float));
     }
 
-    int block_size = 32;
-    int iter = 10000;
+    int block_size;
+    if (block != -1)
+        block_size = block;
+    else
+        block_size = BLOCK_SIZE;
+    printf("block_size = %i\n", block_size);
+
+    int iter = 1;
     clock_t start, end;
     start = clock();
 

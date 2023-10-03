@@ -19,7 +19,7 @@ void print_matrix(float **matrix, int rows, int cols) {
     }
 }
 
-float** malloc_matrix(int rows, int cols) {
+float **malloc_matrix(int rows, int cols) {
     float** mat = (float**)malloc(rows * sizeof(float*));
     for (int i = 0; i < rows; i++) {
         mat[i] = (float*)malloc(cols * sizeof(float));
@@ -27,11 +27,11 @@ float** malloc_matrix(int rows, int cols) {
     return mat;
 }
 
-float** generate_random_sq_matrix(int size) {
-    float** mat = malloc_matrix(size, size);
+float** generate_random_matrix(int rows, int cols) {
+    float** mat = malloc_matrix(rows, cols);
 
-    for (int i=0; i < size; i++) {
-        for (int j=0; j < size; j++) {
+    for (int i=0; i < rows; i++) {
+        for (int j=0; j < cols; j++) {
             mat[i][j] = (float)rand()/(float)(RAND_MAX/100);
         }
     }
@@ -88,7 +88,7 @@ void test_matmul_square_matrices(void)
         }
     }
 
-    float **C = matmul_blocking((float **)A, (float **)B, 2, 2, 2, 2);
+    float **C = matmul_blocking((float **)A, (float **)B, 2, 2, 2, 2, -1);
 
     #ifndef PROFILE
     printf("RUNNING UNITY TEST\n");
@@ -121,7 +121,7 @@ void test_matmul(void) {
 
     // Run function under test
     // float **C = matmul(A, B, 2, 3, 3, 2);
-    float **C = matmul_blocking(A, B, 2, 3, 3, 2);
+    float **C = matmul_blocking(A, B, 2, 3, 3, 2, -1);
     print_matrix(C, 2, 2);
 
     // Check expectations
@@ -155,7 +155,7 @@ void test_matmul_large(void) {
     }
 
     // Run function under test
-    float **C = matmul_blocking(A, B, 20, 30, 30, 20);
+    float **C = matmul_blocking(A, B, 20, 30, 30, 20, -1);
     // print_matrix(C, 20, 20);
 
     // Check expectations
@@ -181,36 +181,34 @@ void test_matmul_large(void) {
     cleanup_matrix(C, 20);
 }
 
-void test_matmul_square_matrices_random(void)
+// void test_matmul_random(void)
+void test_matmul_random(int block_size)
 {
     /**** YOUR CODE HERE ****/
-    for (int i=1; i < 10; i++)
-    {
-        for (int a=0; a < 5; a++)
-        {
-            float **A = generate_random_sq_matrix(i);
-            float **B = generate_random_sq_matrix(i);
-            float **C = matmul_blocking(A, B, i, i, i, i);
+    int i = 1000;
+    int a = 1005;
+    float **A = generate_random_matrix(i, a);
+    float **B = generate_random_matrix(a, i);
+    // float **C = matmul_blocking(A, B, i, a, a, i, -1);
+    float **C = matmul_blocking(A, B, i, a, a, i, block_size);
 
-            #ifndef PROFILE
-            for (int j=0; j < i; j++) {
-                for (int k=0; k < i; k++) {
-                    float sum = 0;
-                    for (int l=0; l < i; l++) {
-                        sum += A[j][l] * B[l][k];
-                    }
-                    UNITY_TEST_ASSERT_FLOAT_WITHIN(0.0001, sum, C[j][k], __LINE__, "Wrong sum");
-                    TEST_ASSERT_EQUAL_INT(sizeof(C[j][k]), sizeof(float));
-                }
+    #ifndef PROFILE
+    for (int j=0; j < i; j++) {
+        for (int k=0; k < i; k++) {
+            float sum = 0;
+            for (int l=0; l < a; l++) {
+                sum += A[j][l] * B[l][k];
             }
-            #endif
-
-            // Cleanup
-            cleanup_matrix(A, i);
-            cleanup_matrix(B, i);
-            cleanup_matrix(C, i);
+            UNITY_TEST_ASSERT_FLOAT_WITHIN(0.0001, sum, C[j][k], __LINE__, "Wrong sum");
+            TEST_ASSERT_EQUAL_INT(sizeof(C[j][k]), sizeof(float));
         }
     }
+    #endif
+
+    // Cleanup
+    cleanup_matrix(A, i);
+    cleanup_matrix(B, a);
+    cleanup_matrix(C, i);
 }
 
 void test_matmul_incompatible_dimensions(void)
@@ -220,7 +218,7 @@ void test_matmul_incompatible_dimensions(void)
     float **B = malloc_matrix(2, 2);
 
     // Run function under test
-    float **C = matmul_blocking(A, B, 2, 3, 2, 2);
+    float **C = matmul_blocking(A, B, 2, 3, 2, 2, -1);
 
     // Check expectations
     UNITY_TEST_ASSERT_NULL(C, __LINE__, "Expected NULL!");

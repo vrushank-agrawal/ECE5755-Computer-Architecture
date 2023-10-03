@@ -2,6 +2,7 @@ CC = gcc
 CFLAGS = -I. -lm
 
 DEBUG =
+BLOCK_SIZE ?= 1
 
 HDF5_FLAGS = -I/usr/include/hdf5/serial -L/usr/lib/x86_64-linux-gnu/hdf5/serial -lhdf5
 COMMON_HDRS = ./utils/data_utils.h ./kernel/conv.h ./kernel/functional.h ./kernel/matrix_ops.h ./kernel/linear.h
@@ -22,7 +23,7 @@ main: main.c $(PROFILE_TEST_FILES) $(COMMON_SRC) $(COMMON_HDRS)
 
 .PHONY: all_tests
 all_tests:
-	$(CC) -o tests/$@ $(TEST_FILES) $(UNITY_FILES) $(COMMON_SRC) $(CFLAGS) $(HDF5_FLAGS) $(DEBUG)
+	$(CC) -o tests/$@ $(TEST_FILES) $(UNITY_FILES) $(COMMON_SRC) $(CFLAGS) $(HDF5_FLAGS) $(DEBUG) -DBLOCK_SIZE=$(BLOCK_SIZE)
 	./tests/$@
 
 .PHONY: clean
