@@ -81,8 +81,8 @@ float **matmul_blocking(float **A,
     start = clock();
 
     for (int many=0; many < iter; many++) {
-        for (int i = 0; i < A_rows; i += block_size) {
-            for (int j = 0; j < B_cols; j += block_size) {
+        for (int j = 0; j < B_cols; j += block_size) {
+            for (int i = 0; i < A_rows; i += block_size) {
                 // Initialize the output to zero
                 for (int k = 0; k < B_rows; k += block_size) {
                     // multiply inside the block
