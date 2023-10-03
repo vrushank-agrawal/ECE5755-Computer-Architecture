@@ -20,7 +20,7 @@ int main(void) {
     // Test conv
     // RUN_TEST(test_conv_slides);
     // RUN_TEST(test_conv_slides2);
-    RUN_TEST(test_conv_slides3);
+    // RUN_TEST(test_conv_slides3);
     // RUN_TEST(test_image_null);
     // RUN_TEST(test_bias_null);
     // RUN_TEST(test_kernel_null);
@@ -46,7 +46,7 @@ int main(void) {
     // Test matrix_ops
     // RUN_TEST(test_matmul_square_matrices);
     // RUN_TEST(test_matmul);
-    // RUN_TEST(test_matmul_large);
+    RUN_TEST(test_matmul_large);
     // RUN_TEST(test_matmul_square_matrices_random);
     // RUN_TEST(test_matmul_incompatible_dimensions);
 

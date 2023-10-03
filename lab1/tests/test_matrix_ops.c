@@ -1,12 +1,24 @@
 #include "unity/unity.h"
 #include "../kernel/kernel.h"
 #include "test_matrix_ops.h"
+#include <stdio.h>
 
 #ifdef PROFILING
 #define PROFILE 1
 #endif
 
 /**** HELPER FUNCTIONS ****/
+void print_matrix(float **matrix, int rows, int cols) {
+    printf("\n");
+    for (int i=0; i < rows; i++) {
+        printf("[");
+        for (int j=0; j < cols; j++) {
+            printf(" %f,", matrix[i][j]);
+        }
+        printf("]\n");
+    }
+}
+
 float** malloc_matrix(int rows, int cols) {
     float** mat = (float**)malloc(rows * sizeof(float*));
     for (int i = 0; i < rows; i++) {
@@ -76,7 +88,7 @@ void test_matmul_square_matrices(void)
         }
     }
 
-    float **C = matmul((float **)A, (float **)B, 2, 2, 2, 2);
+    float **C = matmul_blocking((float **)A, (float **)B, 2, 2, 2, 2);
 
     #ifndef PROFILE
     printf("RUNNING UNITY TEST\n");
@@ -108,7 +120,9 @@ void test_matmul(void) {
     }
 
     // Run function under test
-    float **C = matmul(A, B, 2, 3, 3, 2);
+    // float **C = matmul(A, B, 2, 3, 3, 2);
+    float **C = matmul_blocking(A, B, 2, 3, 3, 2);
+    print_matrix(C, 2, 2);
 
     // Check expectations
     #ifndef PROFILE
@@ -141,7 +155,8 @@ void test_matmul_large(void) {
     }
 
     // Run function under test
-    float **C = matmul(A, B, 20, 30, 30, 20);
+    float **C = matmul_blocking(A, B, 20, 30, 30, 20);
+    // print_matrix(C, 20, 20);
 
     // Check expectations
     #ifndef PROFILE
@@ -175,7 +190,7 @@ void test_matmul_square_matrices_random(void)
         {
             float **A = generate_random_sq_matrix(i);
             float **B = generate_random_sq_matrix(i);
-            float **C = matmul(A, B, i, i, i, i);
+            float **C = matmul_blocking(A, B, i, i, i, i);
 
             #ifndef PROFILE
             for (int j=0; j < i; j++) {
@@ -205,7 +220,7 @@ void test_matmul_incompatible_dimensions(void)
     float **B = malloc_matrix(2, 2);
 
     // Run function under test
-    float **C = matmul(A, B, 2, 3, 2, 2);
+    float **C = matmul_blocking(A, B, 2, 3, 2, 2);
 
     // Check expectations
     UNITY_TEST_ASSERT_NULL(C, __LINE__, "Expected NULL!");
