@@ -3,7 +3,7 @@
 #include <time.h>
 
 #ifndef BLOCK_SIZE
-#define BLOCK_SIZE 1
+#define BLOCK_SIZE 16
 #endif
 
 float **matmul(float **A, float **B, int A_rows, int A_cols, int B_rows, int B_cols) {
@@ -53,13 +53,16 @@ float **matmul_blocking(float **A,
     float **C = (float **)malloc(A_rows * sizeof(float *));
     for (int i = 0; i < A_rows; i++) {
         C[i] = (float *)malloc(B_cols * sizeof(float));
+        for (int j=0; j < B_cols; j++){
+            C[i][j] = 0;
+        }
     }
 
     int block_size;
     if (block != -1)
         block_size = block;
     else
-        block_size = BLOCK_SIZE;
+        block_size = 16;
     printf("block_size = %i\n", block_size);
 
     int iter = 1;
@@ -67,11 +70,6 @@ float **matmul_blocking(float **A,
     start = clock();
 
     for (int many=0; many < iter; many++) {
-        for (int i=0; i < A_rows; i++) {
-            for (int j=0; j < B_cols; j++){
-                C[i][j] = 0;
-            }
-        }
         for (int i = 0; i < A_rows; i += block_size) {
             for (int j = 0; j < B_cols; j += block_size) {
                 // Initialize the output to zero
