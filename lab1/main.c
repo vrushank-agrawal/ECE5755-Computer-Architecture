@@ -12,16 +12,20 @@ void tearDown(void) {
 
 int main(int argc, char **argv)
 {
-    if (argc != 3) {
+    if (argc != 4) {
         // printf("Usage: ./main <fn_num> <test_num>\n");
         // printf("<fn_num> are: 1 (conv), 2 (relu), 3 (linear), 4 (matmul), 5 (softmax)\n");
         // printf("<test_num> are: 1, 2, 3\n");
+        printf("<test> 20: 20x20, 1000: 1000x1000\n");
+        printf("<fn> 1: matmul_blocking, 2: Matmul \n");
         printf("<Block_Size>\n");
-        printf("<fn> 1: Matmul , 2: matmul_blocking\n");
         return 1;
     }
 
-    test_matmul_random(atoi(argv[1]), atoi(argv[2]));
+    if (atoi(argv[1]) == 20)
+        test_matmul_large(atoi(argv[3]), atoi(argv[2]));
+    else
+        test_matmul_random(atoi(argv[3]), atoi(argv[2]));
     return 0;
 
     int fn_num = atoi(argv[1]);
@@ -67,7 +71,7 @@ int main(int argc, char **argv)
         } else if (test_num == 2) {
             test_matmul();
         } else if (test_num == 3) {
-            test_matmul_large();
+            // test_matmul_large();
         } else {
             printf("Invalid test number\n");
             return 1;

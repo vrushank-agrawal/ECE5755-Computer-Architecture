@@ -89,6 +89,8 @@ void test_matmul_square_matrices(void)
     }
 
     float **C = matmul_blocking((float **)A, (float **)B, 2, 2, 2, 2, -1);
+    C = matmul((float **)A, (float **)B, 2, 2, 2, 2);
+    // print_matrix(C, 2, 2);
 
     #ifndef PROFILE
     printf("RUNNING UNITY TEST\n");
@@ -142,7 +144,9 @@ void test_matmul(void) {
     cleanup_matrix(C, 2);
 }
 
-void test_matmul_large(void) {
+// void test_matmul_large(void)
+void test_matmul_large(int block_size, int fn)
+{
     // Setup
     float **A = malloc_matrix(20, 30);
     float **B = malloc_matrix(30, 20);
@@ -154,8 +158,13 @@ void test_matmul_large(void) {
         }
     }
 
+    float **C;
     // Run function under test
-    float **C = matmul_blocking(A, B, 20, 30, 30, 20, -1);
+    if (fn == 1)
+        // C = matmul_blocking(A, B, 20, 30, 30, 20, -1);
+        C = matmul_blocking(A, B, 20, 30, 30, 20, block_size);
+    else
+        C = matmul(A, B, 20, 30, 30, 20);
     // print_matrix(C, 20, 20);
 
     // Check expectations
