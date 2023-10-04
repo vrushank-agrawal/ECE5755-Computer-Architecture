@@ -18,6 +18,8 @@ float **matmul(float **A, float **B, int A_rows, int A_cols, int B_rows, int B_c
     }
 
     int iter = 1;
+    if (A_rows == 20) iter = 10000;
+    if (A_rows == 100) iter = 100;
     clock_t start, end;
     start = clock();
 
@@ -75,7 +77,7 @@ float **matmul_blocking(float **A,
     printf("block_size = %i\n", block_size);
 
     int iter = 1;
-    if (A_rows == 20) iter = 2000;
+    if (A_rows == 20) iter = 10000;
     if (A_rows == 100) iter = 100;
     clock_t start, end;
     start = clock();
