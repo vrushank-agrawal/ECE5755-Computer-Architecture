@@ -8,11 +8,18 @@ import numpy as np
 def draw_0():
 
     values = []
+    # values.append([
+    #     [3.3,  0.6,  0.4,  1.0,  0.8,  0.5,  1.1,  2.3,  3.0],
+    #     [1.7,  0.7,  0.4,  2.1,  2.0,  0.8,  3.4,  2.8,  1.5],
+    #     [4.2,  22.1, 16.3, 12.9, 11.3, 10.8, 9.7,  7.8,  6.9],
+    #     [90.8, 76.6, 83.0, 84.0, 85.8, 87.9, 85.9, 87.2, 88.6],
+    # ])
+
     values.append([
-        [0.2, 0.2, 0.9, 0.3, 0.4, 1.1, 2.3, 2.8, 2.9],
-        [0.1, 0.1, 1.9, 0.4, 0.7, 3.6, 2.2, 1.1, 0.6],
-        [35.4, 24.2, 16.0, 13.1, 11.6, 10.0, 9.4, 12.0, 16.9],
-        [64.3, 75.5, 81.3, 86.2, 87.3, 85.3, 86.1, 84.1, 79.5],
+        [0.5,  1.6,  0.6,  0.9,  0.7,  0.5,  0.6],
+        [0.5,  2.4,  1.1,  2.2,  1.9,  0.7,  0.7],
+        [6.1,  21.2, 15.6, 13.3, 11.0, 10.5, 11.5],
+        [92.9, 74.8, 82.6, 83.7, 86.3, 88.4, 87.2],
     ])
 
     # values.append([
@@ -45,7 +52,9 @@ def draw_0():
 
     labels = ['Frontend bound', 'Bad speculation', 'Backend bound', 'Retiring']
     categories = []
-    categories.append(['1', '2', '4', '8', '16', '32', '64', '128', '256'])
+    # categories.append(['Matmul', '1', '2', '4', '8', '16', '32', '64', '128', '256'])
+    # categories.append(['Matmul', '1', '2', '4', '8', '16', '32', '64', '128'])
+    categories.append(['Matmul', '1', '2', '4', '8', '16', '32'])
     # categories.append(['Convolution 1', 'Convolution 2', 'Convolution 3'])
     # categories.append(['Relu 1', 'Relu 2', 'Relu 3'])
     # categories.append(['Linear 1', 'Linear 2', 'Linear 3'])
@@ -75,7 +84,7 @@ def draw_0():
             bottom += np.array(vals)
 
         # Set labels, title, and legend
-        plt.title('Profiling matmul_blocking')
+        plt.title('Profiling matmul_blocking 20x20 matrix')
         plt.xlabel('Pipeline bottleneck breakdown (%)')
         plt.ylabel('Block Size')
         plt.yticks(bar_position, categories[num])
@@ -89,23 +98,36 @@ def draw_0():
 
 def draw_1():
 
-    blocks = [1, 2, 4, 8, 16, 32, 64, 128, 256]
-    time = [17.067618, 10.092189, 8.261456, 7.423858, 7.175499, 7.281390, 7.182765, 7.337385, 7.750841]
+    blocks = []
+    blocks.append([1, 2, 4, 8, 16, 32, 64, 128, 256])
+    blocks.append([1, 2, 4, 8, 16, 32, 64, 128])
+    blocks.append([1, 2, 4, 8, 16, 32])
 
-    plt.plot(blocks, time, marker='o', linestyle='-')
+    time = []
+    time.append([17.067618, 10.092189, 8.261456, 7.423858, 7.175499, 7.281390, 7.182765, 7.337385, 7.750841])
+    # 0.656898
+    time.append([1.499448, 0.962579, 0.838493, 0.782889, 0.747891, 0.758775, 0.743087, 0.728936])
+    # 0.741843
+    time.append([1.766454, 1.110912, 0.973923, 0.898500, 0.858309, 0.860491])
 
-    # Set labels for the x-axis and y-axis
-    plt.xlabel('Number of Blocks')
-    plt.ylabel('Time (seconds)')
+    titles = ["1000x1000 matrix", "100x100 matrix", "20x20 matrix"]
 
-    # Add a title to the plot
-    plt.title('Execution Time vs. Block Size')
+    for i in range(3):
+        # Initialize the starting positions for the bars
+        plt.plot(blocks[i], time[i], marker='o', linestyle='-')
 
-    # Display the plot
-    plt.grid(True)
-    plt.show()
+        # Set labels for the x-axis and y-axis
+        plt.xlabel('Block-Size')
+        plt.ylabel('Time (seconds)')
+
+        # Add a title to the plot
+        plt.title(f'Execution Time vs. Block Size ({titles[i]})')
+
+        # Display the plot
+        plt.grid(True)
+        plt.show()
 
 
 if __name__ == "__main__":
-    draw_0()
-    # draw_1()
+    # draw_0()
+    draw_1()
