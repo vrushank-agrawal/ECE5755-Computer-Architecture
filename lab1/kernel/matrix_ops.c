@@ -98,8 +98,8 @@ float **matmul_blocking(float **A,
                 for (int k = 0; k < B_rows; k += block_size) {
                     // multiply inside the block
                     for (int ii = i; ii < i + block_size && ii < A_rows; ii++) {
-                        for (int jj = j; jj < j + block_size && jj < B_cols; jj++) {
-                            for (int kk = k; kk < k + block_size && kk < B_rows; kk++) {
+                        for (int kk = k; kk < k + block_size && kk < B_rows; kk++) {
+                            for (int jj = j; jj < j + block_size && jj < B_cols; jj++) {
                                 // printf("i: %i, %f, j: %i, %f\n", ii, A[ii][kk], jj, B[kk][jj]);
                                 C[ii][jj] += (A[ii][kk] * B[kk][jj]);
                             }

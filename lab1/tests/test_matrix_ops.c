@@ -194,8 +194,8 @@ void test_matmul_large(int block_size, int fn)
 void test_matmul_random(int block_size, int fn)
 {
     /**** YOUR CODE HERE ****/
-    int i = 100;
-    int a = 105;
+    int i = 1000;
+    int a = 1005;
     float **A = generate_random_matrix(i, a);
     float **B = generate_random_matrix(a, i);
     float **C;
