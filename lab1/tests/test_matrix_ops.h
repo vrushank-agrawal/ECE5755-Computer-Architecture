@@ -13,5 +13,6 @@ void test_matmul_large(int block_size, int fn);
 // void test_matmul_random(void);
 void test_matmul_random(int block_size, int fn);
 void test_matmul_incompatible_dimensions(void);
+void test_matmul_sparse(void);
 
 #endif /* TEST_MATRIX_OPS_H */

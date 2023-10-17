@@ -32,7 +32,7 @@ float** generate_random_matrix(int rows, int cols) {
 
     for (int i=0; i < rows; i++) {
         for (int j=0; j < cols; j++) {
-            mat[i][j] = (float)rand()/(float)(RAND_MAX/100);
+            mat[i][j] = (float)rand()/(float)(RAND_MAX);
         }
     }
     return mat;
@@ -69,6 +69,22 @@ void cleanup_matrix(float** mat, int row_size) {
         free(mat[i]);
     }
     free(mat);
+}
+
+float **generate_sparse_matrix(int rows, int cols, int sparsity) {
+    // Generate a random matrix
+    float **A = generate_random_matrix(rows, cols);
+
+    // Zero out some elements
+    for (int i=0; i < rows; i++) {
+        for (int j=0; j < cols; j++) {
+            if ((float)rand()/(float)(RAND_MAX) < sparsity) {
+                A[i][j] = 0;
+            }
+        }
+    }
+
+    return A;
 }
 
 /************************/
@@ -239,4 +255,35 @@ void test_matmul_incompatible_dimensions(void)
     // Cleanup
     cleanup_matrix(A, 2);
     cleanup_matrix(B, 2);
+}
+
+void test_matmul_sparse(void) {
+    int rows = 1000;
+    int cols = 1100;
+    // run for different sparsities
+    for (int sparsity = 8.0; sparsity < 9.0; sparsity ++) {
+        float **A = generate_sparse_matrix(rows, cols, sparsity/10);
+        float **B = generate_sparse_matrix(cols, rows, sparsity/10);
+
+        float **C = matmul_sparse(A, B, rows, cols, cols, rows);
+
+        #ifndef PROFILE
+        printf("RUNNING SPARSE MATRIX UNITY TEST\n");
+        for (int j=0; j < rows; j++) {
+            for (int k=0; k < rows; k++) {
+                float sum = 0;
+                for (int l=0; l < cols; l++) {
+                    sum += A[j][l] * B[l][k];
+                }
+                UNITY_TEST_ASSERT_FLOAT_WITHIN(0.0001, sum, C[j][k], __LINE__, "Wrong sum");
+                TEST_ASSERT_EQUAL_INT(sizeof(C[j][k]), sizeof(float));
+            }
+        }
+        #endif
+
+        // Cleanup
+        cleanup_matrix(A, rows);
+        cleanup_matrix(B, cols);
+        cleanup_matrix(C, rows);
+    }
 }
