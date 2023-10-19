@@ -4,7 +4,7 @@ for i in {0}
 do
     for j in "${j_values[@]}"
     do
-        prof ./main $i 0.$j
+        python3 /usr/local/pmu-tools/pmu-tools/toplev.py --core S0-C0 -l1 -v --no-desc taskset -c 0 ./main $i 0.$j
         echo ''
     done
 done
