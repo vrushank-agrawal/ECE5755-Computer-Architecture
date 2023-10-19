@@ -223,6 +223,11 @@ float **matmul_sparse(float **A,
     start = clock();
 
     int iter = 1;
+    if (A_rows == 20) iter = 10000;
+    if (A_rows == 100) iter = 100;
+
+    printf("iterations: %i\n", iter);
+
     // CSR matrix multiplication
     for (int many=0; many < iter; many++) {
         for (int i = 0; i < A_rows; i++) {

@@ -3,9 +3,9 @@
 #include "test_matrix_ops.h"
 #include <stdio.h>
 
-#ifdef PROFILING
-#define PROFILE 1
-#endif
+// #ifdef PROFILING
+// #define PROFILING 1
+// #endif
 
 /**** HELPER FUNCTIONS ****/
 void print_matrix(float **matrix, int rows, int cols) {
@@ -108,7 +108,7 @@ void test_matmul_square_matrices(void)
     C = matmul((float **)A, (float **)B, 2, 2, 2, 2);
     // print_matrix(C, 2, 2);
 
-    #ifndef PROFILE
+    #ifndef PROFILING
     printf("RUNNING UNITY TEST\n");
     float Ans[][2] = {{8, 16}, {11, 22}};
     for (int i=0; i < 2; i++) {
@@ -143,7 +143,7 @@ void test_matmul(void) {
     print_matrix(C, 2, 2);
 
     // Check expectations
-    #ifndef PROFILE
+    #ifndef PROFILING
     printf("RUNNING UNITY TEST\n");
     float Ans[][2] = {{20.0, 40.0}, {26.0, 52.0}};
     for (int i=0; i < 2; i++) {
@@ -184,7 +184,7 @@ void test_matmul_large(int block_size, int fn)
     // print_matrix(C, 20, 20);
 
     // Check expectations
-    #ifndef PROFILE
+    #ifndef PROFILING
     printf("RUNNING UNITY TEST\n");
     float Ans[20][20];
     for (int i=0; i < 20; i++) {
@@ -221,7 +221,7 @@ void test_matmul_random(int block_size, int fn)
     else
         C = matmul(A, B, i, a, a, i);
 
-    #ifndef PROFILE
+    #ifndef PROFILING
     for (int j=0; j < i; j++) {
         for (int k=0; k < i; k++) {
             float sum = 0;
@@ -257,17 +257,38 @@ void test_matmul_incompatible_dimensions(void)
     cleanup_matrix(B, 2);
 }
 
-void test_matmul_sparse(void) {
-    int rows = 1000;
-    int cols = 1005;
-
+#ifndef PROFILING
+void test_matmul_sparse (void)
+#else
+void test_matmul_sparse(int size, float sparse)
+#endif
+{
+    int rows = 10;
+    int cols = 11;
     float sparsity = 0.9;
+
+    #ifdef PROFILING
+    sparsity = sparse;
+    if (size == 0) {
+        rows = 20;
+        cols = 30;
+    } else if (size == 1) {
+        rows = 100;
+        cols = 100;
+    } else {
+        int rows = 1000;
+        int cols = 1005;
+    }
+    #endif
+
+    printf("rows = %i, cols = %i, sparsity = %f\n", rows, cols, sparsity);
+
     float **A = generate_sparse_matrix(rows, cols, sparsity);
     float **B = generate_sparse_matrix(cols, rows, sparsity);
 
     float **C = matmul_sparse(A, B, rows, cols, cols, rows);
 
-    #ifndef PROFILE
+    #ifndef PROFILING
     printf("RUNNING SPARSE MATRIX UNITY TEST\n");
     for (int j=0; j < rows; j++) {
         for (int k=0; k < rows; k++) {

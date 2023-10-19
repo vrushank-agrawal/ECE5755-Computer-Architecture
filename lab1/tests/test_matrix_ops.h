@@ -13,6 +13,11 @@ void test_matmul_large(int block_size, int fn);
 // void test_matmul_random(void);
 void test_matmul_random(int block_size, int fn);
 void test_matmul_incompatible_dimensions(void);
+
+#ifndef PROFILING
 void test_matmul_sparse(void);
+#else
+void test_matmul_sparse(int size, float sparsity);
+#endif
 
 #endif /* TEST_MATRIX_OPS_H */
