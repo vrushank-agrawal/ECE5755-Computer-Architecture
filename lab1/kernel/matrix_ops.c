@@ -196,24 +196,24 @@ float **matmul_sparse(float **A,
     }
 
     /*******************************/
-    /*** Create CSR format for B ***/
+    /*** Create CSC format for B ***/
     /*******************************/
-    int *B_row_ptr = (int *)malloc((B_rows + 1) * sizeof(int));
-    int *B_col_idx = (int *)malloc(non_zero * sizeof(int));
+    int *B_col_ptr = (int *)malloc((B_cols + 1) * sizeof(int));
+    int *B_row_idx = (int *)malloc(non_zero * sizeof(int));
     float *B_val = (float *)malloc(non_zero * sizeof(float));
 
     nnz = 0;
-    B_row_ptr[0] = 0;
+    B_col_ptr[0] = 0;
 
-    for (int i = 0; i < B_rows; i++) {
-        for (int j = 0; j < B_cols; j++) {
+    for (int j = 0; j < B_cols; j++) {
+        for (int i = 0; i < B_rows; i++) {
             if (B[i][j] != 0) {
                 B_val[nnz] = B[i][j];
-                B_col_idx[nnz] = j;
+                B_row_idx[nnz] = i;
                 nnz++;
             }
         }
-        B_row_ptr[i + 1] = nnz;
+        B_col_ptr[j + 1] = nnz;
     }
 
     /*******************************/
@@ -227,30 +227,32 @@ float **matmul_sparse(float **A,
     for (int many=0; many < iter; many++) {
         for (int i = 0; i < A_rows; i++) {
             for (int j = 0; j < B_cols; j++) {
-                float sum = 0;
+                result[i][j] = 0;
+                // iterate over the row of A
                 int row_start = A_row_ptr[i];
                 int row_end = A_row_ptr[i + 1];
-                int col_start = B_row_ptr[j];
-                int col_end = B_row_ptr[j + 1];
+                int elem_in_A = row_start;
 
-                int row_idx = row_start;
-                int col_idx = col_start;
+                // iterate over the column of B
+                int col_start = B_col_ptr[j];
+                int col_end = B_col_ptr[j + 1];
+                int elem_in_B = col_start;
 
-                while (row_idx < row_end && col_idx < col_end) {
-                    int row = A_col_idx[row_idx];
-                    int col = B_col_idx[col_idx];
+                // multiply the row of A with the column of B
+                while (elem_in_A < row_end && elem_in_B < col_end) {
+                    int row = A_col_idx[elem_in_A];
+                    int col = B_row_idx[elem_in_B];
 
                     if (row == col) {
-                        sum += A_val[row_idx] * B_val[col_idx];
-                        row_idx++;
-                        col_idx++;
+                        result[i][j] += A_val[elem_in_A] * B_val[elem_in_B];
+                        elem_in_A++;
+                        elem_in_B++;
                     } else if (row < col) {
-                        row_idx++;
+                        elem_in_A++;
                     } else {
-                        col_idx++;
+                        elem_in_B++;
                     }
                 }
-                result[i][j] += sum;
             }
         }
     }
