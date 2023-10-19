@@ -224,7 +224,7 @@ float **matmul_sparse(float **A,
     clock_t start, end;
     start = clock();
 
-    int iter = 0;
+    int iter = 1;
     if (A_rows == 20) iter = 10000;
     if (A_rows == 100) iter = 100;
 
@@ -247,14 +247,14 @@ float **matmul_sparse(float **A,
 
                 // multiply the row of A with the column of B
                 while (elem_in_A < row_end && elem_in_B < col_end) {
-                    int row = A_col_idx[elem_in_A];
-                    int col = B_row_idx[elem_in_B];
+                    int A_col = A_col_idx[elem_in_A];
+                    int B_row = B_row_idx[elem_in_B];
 
-                    if (row == col) {
+                    if (A_col == B_row) {
                         result[i][j] += A_val[elem_in_A] * B_val[elem_in_B];
                         elem_in_A++;
                         elem_in_B++;
-                    } else if (row < col) {
+                    } else if (A_col < B_row) {
                         elem_in_A++;
                     } else {
                         elem_in_B++;
