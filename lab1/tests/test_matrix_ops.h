@@ -4,6 +4,7 @@
 float **malloc_matrix(int rows, int cols);
 float **generate_random_matrix(int rows, int cols);
 float **ans_20_20(void);
+float **generate_sparse_matrix(int rows, int cols, float sparsity);
 void cleanup_matrix(float** mat, int size);
 
 void test_matmul_square_matrices(void);

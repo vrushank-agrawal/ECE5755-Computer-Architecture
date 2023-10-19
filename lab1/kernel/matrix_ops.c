@@ -160,6 +160,7 @@ float **matmul_sparse(float **A,
             }
         }
     }
+    printf("non_zero A: %i\n", non_zero);
 
     /*******************************/
     /*** Create CSR format for A ***/
@@ -194,6 +195,7 @@ float **matmul_sparse(float **A,
             }
         }
     }
+    printf("non_zero B: %i\n", non_zero);
 
     /*******************************/
     /*** Create CSC format for B ***/
@@ -222,7 +224,7 @@ float **matmul_sparse(float **A,
     clock_t start, end;
     start = clock();
 
-    int iter = 1;
+    int iter = 0;
     if (A_rows == 20) iter = 10000;
     if (A_rows == 100) iter = 100;
 

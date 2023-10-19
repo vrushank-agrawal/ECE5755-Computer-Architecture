@@ -67,16 +67,17 @@ void cleanup_matrix(float** mat, int row_size) {
     free(mat);
 }
 
-float **generate_sparse_matrix(int rows, int cols, int sparsity) {
+float **generate_sparse_matrix(int rows, int cols, float sparsity) {
     // Generate a random matrix
     float** mat = malloc_matrix(rows, cols);
 
     for (int i=0; i < rows; i++) {
         for (int j=0; j < cols; j++) {
-            if ((float)rand()/(float)(RAND_MAX) < sparsity) {
+            float r = (float)rand()/(float)(RAND_MAX);
+            if (r < sparsity) {
                 mat[i][j] = 0;
             } else {
-                mat[i][j] = (float)rand()/(float)(RAND_MAX);
+                mat[i][j] = r;
             }
         }
     }
