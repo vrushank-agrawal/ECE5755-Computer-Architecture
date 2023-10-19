@@ -3,10 +3,6 @@
 #include "test_matrix_ops.h"
 #include <stdio.h>
 
-// #ifdef PROFILING
-// #define PROFILING 1
-// #endif
-
 /**** HELPER FUNCTIONS ****/
 void print_matrix(float **matrix, int rows, int cols) {
     printf("\n");
@@ -276,8 +272,8 @@ void test_matmul_sparse(int size, float sparse)
         rows = 100;
         cols = 100;
     } else {
-        int rows = 1000;
-        int cols = 1005;
+        rows = 1000;
+        cols = 1005;
     }
     #endif
 
