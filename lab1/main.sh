@@ -4,7 +4,7 @@ for i in {0}
 do
     for j in "${j_values[@]}"
     do
-        ./main $i 0.$j
+        prof ./main $i 0.$j
         echo ''
     done
 done
