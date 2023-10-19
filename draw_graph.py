@@ -99,16 +99,20 @@ def draw_0():
 def draw_1():
 
     blocks = []
-    blocks.append([1, 2, 4, 8, 16, 32, 64, 128, 256])
-    blocks.append([1, 2, 4, 8, 16, 32, 64, 128])
-    blocks.append([1, 2, 4, 8, 16, 32])
+    blocks.append([0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9])
+    blocks.append([0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9])
+    blocks.append([0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9])
 
     time = []
-    time.append([17.067618, 10.092189, 8.261456, 7.423858, 7.175499, 7.281390, 7.182765, 7.337385, 7.750841])
+
+    time.append([11.113602, 13.119845, 16.288636, 13.728372, 11.259597, 8.935291, 7.042263, 4.709917, 2.748128])
+    # time.append([17.067618, 10.092189, 8.261456, 7.423858, 7.175499, 7.281390, 7.182765, 7.337385, 7.750841])
     # 0.656898
-    time.append([1.499448, 0.962579, 0.838493, 0.782889, 0.747891, 0.758775, 0.743087, 0.728936])
+    time.append([1.088363, 1.143518, 1.301299, 1.215436, 1.193215, 0.795020, 0.633177, 0.565055, 0.288351])
+    # time.append([1.499448, 0.962579, 0.838493, 0.782889, 0.747891, 0.758775, 0.743087, 0.728936])
     # 0.741843
-    time.append([1.766454, 1.110912, 0.973923, 0.898500, 0.858309, 0.860491])
+    time.append([0.736861, 0.955316, 1.028136, 0.841390, 0.505078, 0.392630, 0.277656, 0.175522, 0.105911])
+    # time.append([1.766454, 1.110912, 0.973923, 0.898500, 0.858309, 0.860491])
 
     titles = ["1000x1000 matrix", "100x100 matrix", "20x20 matrix"]
 
@@ -117,11 +121,11 @@ def draw_1():
         plt.plot(blocks[i], time[i], marker='o', linestyle='-')
 
         # Set labels for the x-axis and y-axis
-        plt.xlabel('Block-Size')
+        plt.xlabel('Sparsity ratio')
         plt.ylabel('Time (seconds)')
 
         # Add a title to the plot
-        plt.title(f'Execution Time vs. Block Size ({titles[i]})')
+        plt.title(f'Execution Time vs. Matrix Sparcity ({titles[i]})')
 
         # Display the plot
         plt.grid(True)
