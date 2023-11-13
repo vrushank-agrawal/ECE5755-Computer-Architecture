@@ -47,6 +47,7 @@ float **matmul(float **A, float **B, int A_rows, int A_cols, int B_rows, int B_c
 
 /***************************************************************/
 /**************************     LAB2      **********************/
+/**************************     LAB2      **********************/
 /***************************************************************/
 float **matmul_blocking(float **A,
                         float **B,
@@ -126,6 +127,7 @@ float **matmul_blocking(float **A,
 
 
 /***************************************************************/
+/**************************     LAB3      **********************/
 /**************************     LAB3      **********************/
 /***************************************************************/
 float **matmul_sparse(float **A,
@@ -285,6 +287,7 @@ float **matmul_sparse(float **A,
 
 /***************************************************************/
 /**************************     LAB4      **********************/
+/**************************     LAB4      **********************/
 /***************************************************************/
 
 #include <pthread.h>
@@ -330,6 +333,7 @@ float **matmul_multithread(
     }
 
     printf("ENTERING MULTITHREAD\n");
+    printf("ENTERING MULTITHREAD\n");
     // Initialize output to zero
     float **C = (float **)malloc(A_rows * sizeof(float *));
     for (int i = 0; i < A_rows; i++) {
@@ -347,11 +351,34 @@ float **matmul_multithread(
     int iter = 1;
     if (A_rows == 20) iter = 10000;
     if (A_rows == 100) iter = 100;
+    printf("Number of iterations: %i\n", iter);
+
     clock_t start, end;
     start = clock();
 
-    printf("Number of iterations: %i\n", iter);
     for (int many=0; many < iter; many++)
+        for (int i = 0; i < NUM_THREADS; i++) {
+            data[i].start_row = i * rows_per_thread;
+            data[i].end_row = (i + 1) * rows_per_thread;
+            data[i].A_cols = A_cols;
+            data[i].B_cols = B_cols;
+            data[i].A = A;
+            data[i].B = B;
+            data[i].C = C;
+
+            if (i == NUM_THREADS - 1) {
+                data[i].end_row = A_rows;
+            }
+
+            if (many == 0) {
+                printf("thread %i: %i - %i\n", i, data[i].start_row, data[i].end_row);
+            }
+
+            pthread_create(&threads[i], NULL, multiply, (void *)&data[i]);
+        }
+
+    for (int i = 0; i < NUM_THREADS; i++)
+        pthread_join(threads[i], NULL);
         for (int i = 0; i < NUM_THREADS; i++) {
             data[i].start_row = i * rows_per_thread;
             data[i].end_row = (i + 1) * rows_per_thread;
