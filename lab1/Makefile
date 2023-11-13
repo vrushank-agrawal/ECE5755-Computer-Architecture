@@ -1,5 +1,5 @@
 CC = gcc
-CFLAGS = -I. -lm
+CFLAGS = -I. -lm -lpthread
 
 DEBUG =
 BLOCK_SIZE ?= 1
@@ -20,7 +20,7 @@ test: all_tests
 
 .PHONY: main
 main: main.c $(PROFILE_TEST_FILES) $(COMMON_SRC) $(COMMON_HDRS)
-	$(CC) -o main main.c $(PROFILE_TEST_FILES) $(UNITY_FILES) $(COMMON_SRC) $(COMMON_HDRS) $(HDF5_FLAGS) $(CFLAGS) -DPROFILING -DNUM_THREADS=$(NUM_THREADS)
+	$(CC) -o main main.c $(PROFILE_TEST_FILES) $(UNITY_FILES) $(COMMON_SRC) $(COMMON_HDRS) $(HDF5_FLAGS) $(CFLAGS) -DPROFILING
 
 .PHONY: all_tests
 all_tests:

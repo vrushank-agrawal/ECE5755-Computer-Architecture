@@ -9,11 +9,18 @@ void cleanup_matrix(float** mat, int size);
 
 void test_matmul_square_matrices(void);
 void test_matmul(void);
+
+#ifndef PROFILING
 void test_matmul_large(void);
-// void test_matmul_large(int block_size, int fn);
+#else
+void test_matmul_large(int threads);
+#endif
+
+#ifndef PROFILING
 void test_matmul_random(void);
-// void test_matmul_random(int block_size, int fn);
-void test_matmul_incompatible_dimensions(void);
+#else
+void test_matmul_random(int threads);
+#endif
 
 #ifndef PROFILING
 void test_matmul_sparse(void);

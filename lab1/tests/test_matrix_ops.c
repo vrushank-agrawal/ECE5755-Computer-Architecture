@@ -157,8 +157,11 @@ void test_matmul(void) {
     cleanup_matrix(C, 2);
 }
 
+#ifndef PROFILING
 void test_matmul_large(void)
-// void test_matmul_large(int block_size, int fn)
+#else
+void test_matmul_large(int threads)
+#endif
 {
     // Setup
     float **A = malloc_matrix(20, 30);
@@ -172,8 +175,11 @@ void test_matmul_large(void)
     }
 
     float **C;
-    C = matmul_multithread(A, B, 20, 30, 30, 20);
-    printf("rows = %i, cols = %i, threads = %i\n", 20, 20, NUM_THREADS);
+    #ifndef PROFILING
+    int threads = NUM_THREADS;
+    #endif
+    C = matmul_multithread(A, B, 20, 30, 30, 20, threads);
+    printf("rows = %i, cols = %i, threads = %i\n", 20, 20, threads);
 
     #ifdef DEBUG
     print_matrix(C, 20, 20);
@@ -200,8 +206,11 @@ void test_matmul_large(void)
     cleanup_matrix(C, 20);
 }
 
+#ifndef PROFILING
 void test_matmul_random(void)
-// void test_matmul_random(int block_size, int fn)
+#else
+void test_matmul_random(int threads)
+#endif
 {
     /**** YOUR CODE HERE ****/
     int i = 1000;
@@ -210,8 +219,11 @@ void test_matmul_random(void)
     float **B = generate_random_matrix(a, i);
     float **C;
 
-    C = matmul_multithread(A, B, i, a, a, i);
-    printf("rows = %i, cols = %i, threads = %i\n", i, i, NUM_THREADS);
+    #ifndef PROFILING
+    int threads = NUM_THREADS;
+    #endif
+    C = matmul_multithread(A, B, i, a, a, i, threads);
+    printf("rows = %i, cols = %i, threads = %i\n", i, i, threads);
 
     #ifndef PROFILING
     printf("RUNNING UNITY TEST\n");

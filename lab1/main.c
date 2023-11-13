@@ -16,22 +16,33 @@ int main(int argc, char **argv)
         // printf("Usage: ./main <fn_num> <test_num>\n");
         // printf("<fn_num> are: 1 (conv), 2 (relu), 3 (linear), 4 (matmul), 5 (softmax)\n");
         // printf("<test_num> are: 1, 2, 3\n");
-        printf("<test> 0: 20x20, 1: 100x100, 2: 1000x1000\n");
-        printf("<sparsity> 0.1 - 0.9\n");
+        printf("<test> 0: 20x20, 1: 1000x1000\n");
+        printf("<NUM_THREAD> 1 - 8\n");
         // printf("<fn> 0: matmul_sparse, 1: matmul \n");
         // printf("<Block_Size>\n");
         return 1;
     }
 
-    if (atoi(argv[1]) < 0 || atoi(argv[1]) > 2) {
-        printf("Invalid test size\n");
+    int test = atoi(argv[1]);
+    int threads = atoi(argv[2]);
+
+    if (test < 0 || test > 1) {
+        printf("Invalid test\n");
         return 1;
-    } else if (atof(argv[2]) < 0.0 || atof(argv[2]) > 1.0) {
-        printf("Invalid sparsity\n");
+    } else if (threads < 1 || threads > 8) {
+        printf("Invalid threads\n");
         return 1;
     }
-    test_matmul_sparse(atoi(argv[1]), atof(argv[2]));
+
+    if (test == 0) {
+        test_matmul_large(threads);
+    } else if (test == 1) {
+        test_matmul_random(threads);
+    }
+
     return 0;
+
+    // lab2
 
     int fn_num = atoi(argv[1]);
     int test_num = atoi(argv[2]);
