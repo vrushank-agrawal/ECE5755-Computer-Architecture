@@ -157,8 +157,8 @@ void test_matmul(void) {
     cleanup_matrix(C, 2);
 }
 
-// void test_matmul_large(void)
-void test_matmul_large(int block_size, int fn)
+void test_matmul_large(void)
+// void test_matmul_large(int block_size, int fn)
 {
     // Setup
     float **A = malloc_matrix(20, 30);
@@ -172,26 +172,23 @@ void test_matmul_large(int block_size, int fn)
     }
 
     float **C;
-    // Run function under test
-    if (fn == 1)
-        // C = matmul_blocking(A, B, 20, 30, 30, 20, -1);
-        C = matmul_blocking(A, B, 20, 30, 30, 20, block_size);
-    else
-        C = matmul(A, B, 20, 30, 30, 20);
-    // print_matrix(C, 20, 20);
+    C = matmul_multithread(A, B, 20, 30, 30, 20);
+    printf("rows = %i, cols = %i, threads = %i\n", 20, 20, NUM_THREADS);
+
+    #ifdef DEBUG
+    print_matrix(C, 20, 20);
+    #endif
 
     // Check expectations
     #ifndef PROFILING
     printf("RUNNING UNITY TEST\n");
-    float Ans[20][20];
     for (int i=0; i < 20; i++) {
         for (int j=0; j < 20; j++) {
             float sum = 0;
             for (int k=0; k < 30; k++) {
                 sum += A[i][k] * B[k][j];
             }
-            Ans[i][j] = sum;
-            UNITY_TEST_ASSERT_FLOAT_WITHIN(0.0001, Ans[i][j], C[i][j], __LINE__, "Wrong sum");
+            UNITY_TEST_ASSERT_FLOAT_WITHIN(0.0001, sum, C[i][j], __LINE__, "Wrong sum");
             TEST_ASSERT_EQUAL_INT(sizeof(C[i][j]), sizeof(float));
         }
     }
@@ -203,8 +200,8 @@ void test_matmul_large(int block_size, int fn)
     cleanup_matrix(C, 20);
 }
 
-// void test_matmul_random(void)
-void test_matmul_random(int block_size, int fn)
+void test_matmul_random(void)
+// void test_matmul_random(int block_size, int fn)
 {
     /**** YOUR CODE HERE ****/
     int i = 1000;
@@ -212,13 +209,12 @@ void test_matmul_random(int block_size, int fn)
     float **A = generate_random_matrix(i, a);
     float **B = generate_random_matrix(a, i);
     float **C;
-    if (fn == 1)
-        // C = matmul_blocking(A, B, i, a, a, i, -1);
-        C = matmul_blocking(A, B, i, a, a, i, block_size);
-    else
-        C = matmul(A, B, i, a, a, i);
+
+    C = matmul_multithread(A, B, i, a, a, i);
+    printf("rows = %i, cols = %i, threads = %i\n", i, i, NUM_THREADS);
 
     #ifndef PROFILING
+    printf("RUNNING UNITY TEST\n");
     for (int j=0; j < i; j++) {
         for (int k=0; k < i; k++) {
             float sum = 0;
