@@ -44,6 +44,10 @@ float **matmul(float **A, float **B, int A_rows, int A_cols, int B_rows, int B_c
     return C;
 }
 
+
+/***************************************************************/
+/**************************     lab2      **********************/
+/***************************************************************/
 float **matmul_blocking(float **A,
                         float **B,
                         int A_rows,
@@ -121,6 +125,9 @@ float **matmul_blocking(float **A,
 }
 
 
+/***************************************************************/
+/**************************     lab3      **********************/
+/***************************************************************/
 float **matmul_sparse(float **A,
                     float **B,
                     int A_rows,
@@ -275,3 +282,60 @@ float **matmul_sparse(float **A,
     return result;
 }
 
+
+/***************************************************************/
+/**************************     lab4      **********************/
+/***************************************************************/
+float **matmul_multithread(
+    float **A,
+    float **B,
+    int A_rows,
+    int A_cols,
+    int B_rows,
+    int B_cols)
+{
+    if (A_cols != B_rows) {
+        printf("Matrix dimensions incompatible for multiplication.\n");
+        return NULL;
+    }
+
+    if (A == NULL || B == NULL){
+        printf("Matrices are null.\n");
+        return NULL;
+    }
+
+    // Initialize output to zero
+    float **C = (float **)malloc(A_rows * sizeof(float *));
+    for (int i = 0; i < A_rows; i++) {
+        C[i] = (float *)malloc(B_cols * sizeof(float));
+        for (int j=0; j < B_cols; j++){
+            C[i][j] = 0;
+        }
+    }
+
+    int iter = 1;
+    if (A_rows == 20) iter = 10000;
+    if (A_rows == 100) iter = 100;
+    clock_t start, end;
+    start = clock();
+
+    /**** YOUR CODE HERE ****/
+    for (int many=0; many < iter; many++)
+        for (int i=0; i < A_rows; i++) {
+            for (int j=0; j < B_cols; j++) {
+                C[i][j] = 0;
+                for (int k=0; k < B_rows; k++) {
+                    C[i][j] += A[i][k] * B[k][j];
+                }
+            }
+        }
+
+    end = clock();
+    double run_time = (double)(end - start);
+    double cpu_time = (run_time) / CLOCKS_PER_SEC;
+
+    printf("A: %i x %i\nB: %i x %i\n", A_rows, A_cols, B_rows, B_cols);
+    printf("Matmul CPU time used: %f seconds\n", cpu_time);
+
+    return C;
+}
