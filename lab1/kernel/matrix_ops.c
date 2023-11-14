@@ -310,10 +310,11 @@ void *multiply(void *arg) {
     for (int many=0; many < iter; many++)
         for (int i = start; i < end; i++) {
             for (int j = 0; j < B_cols; j++) {
-                C[i][j] = 0;
+                float temp = 0;
                 for (int k = 0; k < A_cols; k++) {
-                    C[i][j] += A[i][k] * B[k][j];
+                    temp += A[i][k] * B[k][j];
                 }
+                C[i][j] = temp;
             }
         }
 
