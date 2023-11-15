@@ -16,7 +16,7 @@ int main(int argc, char **argv)
         // printf("Usage: ./main <fn_num> <test_num>\n");
         // printf("<fn_num> are: 1 (conv), 2 (relu), 3 (linear), 4 (matmul), 5 (softmax)\n");
         // printf("<test_num> are: 1, 2, 3\n");
-        printf("<test> 0: 20x20, 1: 1000x1000\n");
+        printf("<test> 0: 20x20, 1: 100x100, 2: 1000x1000\n");
         printf("<NUM_THREAD> 1 - 8\n");
         // printf("<fn> 0: matmul_sparse, 1: matmul \n");
         // printf("<Block_Size>\n");
@@ -26,7 +26,7 @@ int main(int argc, char **argv)
     int test = atoi(argv[1]);
     int threads = atoi(argv[2]);
 
-    if (test < 0 || test > 1) {
+    if (test < 0 || test > 2) {
         printf("Invalid test\n");
         return 1;
     } else if (threads < 1 || threads > 8) {
@@ -37,7 +37,9 @@ int main(int argc, char **argv)
     if (test == 0) {
         test_matmul_large(threads);
     } else if (test == 1) {
-        test_matmul_random(threads);
+        test_matmul_random(threads, 100);
+    } else if (test == 2) {
+        test_matmul_random(threads, 1000);
     }
 
     return 0;

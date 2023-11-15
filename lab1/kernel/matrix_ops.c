@@ -303,7 +303,7 @@ void *multiply(void *arg) {
 
     int iter = 1;
     if (A_rows == 20) iter = 100000;
-    if (A_rows == 100) iter = 100;
+    if (A_rows == 100) iter = 1000;
 
     if (data->tid == 0) printf("Number of iterations: %i\n", iter);
 
@@ -377,7 +377,7 @@ float **matmul_multithread(
             data[i].end_row = A_rows;
         }
 
-        printf("thread %i: %i - %i\n", i, data[i].start_row, data[i].end_row);
+        // printf("thread %i: %i - %i\n", i, data[i].start_row, data[i].end_row);
 
         pthread_create(&threads[i], NULL, multiply, (void *)&data[i]);
     }

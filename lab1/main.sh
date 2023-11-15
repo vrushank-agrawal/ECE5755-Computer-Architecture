@@ -1,4 +1,4 @@
-for i in {0..1}
+for i in {0..2}
 do
     # for j in {1..8}
     # do

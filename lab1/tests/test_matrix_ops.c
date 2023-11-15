@@ -209,19 +209,26 @@ void test_matmul_large(int threads)
 #ifndef PROFILING
 void test_matmul_random(void)
 #else
-void test_matmul_random(int threads)
+void test_matmul_random(int threads, int size)
 #endif
 {
-    /**** YOUR CODE HERE ****/
-    int i = 1000;
-    int a = 1005;
+    #ifndef PROFILING
+    int threads = NUM_THREADS;
+    int size = 1000;
+    #endif
+
+    int i, a;
+    if (size == 100) {
+        i = 100;
+        a = 105;
+    } else {
+        i = 1000;
+        a = 1005;
+    }
+
     float **A = generate_random_matrix(i, a);
     float **B = generate_random_matrix(a, i);
     float **C;
-
-    #ifndef PROFILING
-    int threads = NUM_THREADS;
-    #endif
     C = matmul_multithread(A, B, i, a, a, i, threads);
     printf("rows = %i, cols = %i, threads = %i\n", i, i, threads);
 
@@ -279,7 +286,7 @@ void test_matmul_sparse(int size, float sparse)
         cols = 30;
     } else if (size == 1) {
         rows = 100;
-        cols = 100;
+        cols = 105;
     } else {
         rows = 1000;
         cols = 1005;

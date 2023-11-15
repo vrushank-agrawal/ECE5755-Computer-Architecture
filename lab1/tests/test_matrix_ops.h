@@ -19,7 +19,7 @@ void test_matmul_large(int threads);
 #ifndef PROFILING
 void test_matmul_random(void);
 #else
-void test_matmul_random(int threads);
+void test_matmul_random(int threads, int size);
 #endif
 
 #ifndef PROFILING
