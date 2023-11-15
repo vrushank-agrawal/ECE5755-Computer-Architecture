@@ -356,7 +356,9 @@ float **matmul_multithread(
     int rows_per_thread = (int)(A_rows / num_threads);
 
     struct timeval start_time, end_time;
+    clock_t start, end;
     gettimeofday(&start_time, NULL);
+    start = clock();
 
     for (int i = 0; i < num_threads; i++) {
         data[i].tid = i;
@@ -383,10 +385,13 @@ float **matmul_multithread(
     for (int i = 0; i < num_threads; i++) pthread_join(threads[i], NULL);
 
     gettimeofday(&end_time, NULL);
+    end = clock();
     double run_time = (double)(end_time.tv_sec - start_time.tv_sec) + (double)(end_time.tv_usec - start_time.tv_usec) / 1000000;
 
     printf("A: %i x %i\nB: %i x %i\n", A_rows, A_cols, B_rows, B_cols);
-    printf("Matmul CPU time used: %f seconds\n", run_time);
+    printf("Actual run time used: %f seconds\n", run_time);
+    printf("Total thread time used: %f seconds\n", (double)(end - start) / CLOCKS_PER_SEC);
+    printf("Average thread time used: %f seconds\n", (double)(end - start) / CLOCKS_PER_SEC / num_threads);
 
     return C;
 }
