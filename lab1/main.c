@@ -12,12 +12,13 @@ void tearDown(void) {
 
 int main(int argc, char **argv)
 {
-    if (argc != 3) {
+    if (argc != 4) {
         // printf("Usage: ./main <fn_num> <test_num>\n");
         // printf("<fn_num> are: 1 (conv), 2 (relu), 3 (linear), 4 (matmul), 5 (softmax)\n");
         // printf("<test_num> are: 1, 2, 3\n");
         printf("<test> 0: 20x20, 1: 100x100, 2: 1000x1000\n");
         printf("<NUM_THREAD> 1 - 8\n");
+        printf("<fn> 0: matmul_multithread, 1: matmul\n");
         // printf("<fn> 0: matmul_sparse, 1: matmul \n");
         // printf("<Block_Size>\n");
         return 1;
@@ -25,21 +26,35 @@ int main(int argc, char **argv)
 
     int test = atoi(argv[1]);
     int threads = atoi(argv[2]);
+    int fn = atoi(argv[3]);
 
-    if (test < 0 || test > 2) {
+    if (test < 0 || test > 6) {
         printf("Invalid test\n");
         return 1;
-    } else if (threads < 1 || threads > 8) {
+    }
+    if (threads < 1 || threads > 8) {
         printf("Invalid threads\n");
+        return 1;
+    }
+    if (fn < 0 || fn > 1) {
+        printf("Invalid fn\n");
         return 1;
     }
 
     if (test == 0) {
-        test_matmul_large(threads);
+        test_matmul_large(threads, fn);
     } else if (test == 1) {
-        test_matmul_random(threads, 100);
+        test_matmul_random(threads, 100, fn);
     } else if (test == 2) {
-        test_matmul_random(threads, 1000);
+        test_matmul_random(threads, 500, fn);
+    } else if (test == 3) {
+        test_matmul_random(threads, 5, fn);
+    } else if (test == 4) {
+        test_matmul_random(threads, 105, fn);
+    } else if (test == 5) {
+        test_matmul_random(threads, 10, fn);
+    } else if (test == 6) {
+        test_matmul_random(threads, 1000, fn);
     }
 
     return 0;

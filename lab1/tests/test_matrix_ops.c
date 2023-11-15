@@ -160,7 +160,7 @@ void test_matmul(void) {
 #ifndef PROFILING
 void test_matmul_large(void)
 #else
-void test_matmul_large(int threads)
+void test_matmul_large(int threads, int fn)
 #endif
 {
     // Setup
@@ -177,8 +177,11 @@ void test_matmul_large(int threads)
     float **C;
     #ifndef PROFILING
     int threads = NUM_THREADS;
+    int fn = 0;
     #endif
-    C = matmul_multithread(A, B, 20, 30, 30, 20, threads);
+    if (fn == 0) C = matmul_multithread(A, B, 20, 30, 30, 20, threads);
+    else if (fn == 1) C = matmul(A, B, 20, 30, 30, 20);
+
     printf("rows = %i, cols = %i, threads = %i\n", 20, 20, threads);
 
     #ifdef DEBUG
@@ -209,18 +212,31 @@ void test_matmul_large(int threads)
 #ifndef PROFILING
 void test_matmul_random(void)
 #else
-void test_matmul_random(int threads, int size)
+void test_matmul_random(int threads, int size, int fn)
 #endif
 {
     #ifndef PROFILING
     int threads = NUM_THREADS;
     int size = 1000;
+    int fn = 0;
     #endif
 
     int i, a;
     if (size == 100) {
         i = 100;
         a = 105;
+    } else if (size == 500) {
+        i = 500;
+        a = 505;
+    } else if (size == 5) {
+        i = 5;
+        a = 1000;
+    } else if (size == 105) {
+        i = 105;
+        a = 1000;
+    } else if (size == 10) {
+        i = 1000;
+        a = 10;
     } else {
         i = 1000;
         a = 1005;
@@ -229,7 +245,9 @@ void test_matmul_random(int threads, int size)
     float **A = generate_random_matrix(i, a);
     float **B = generate_random_matrix(a, i);
     float **C;
-    C = matmul_multithread(A, B, i, a, a, i, threads);
+    if (fn == 0) C = matmul_multithread(A, B, i, a, a, i, threads);
+    else if (fn == 1) C = matmul(A, B, i, a, a, i);
+
     printf("rows = %i, cols = %i, threads = %i\n", i, i, threads);
 
     #ifndef PROFILING

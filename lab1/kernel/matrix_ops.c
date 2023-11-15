@@ -18,8 +18,12 @@ float **matmul(float **A, float **B, int A_rows, int A_cols, int B_rows, int B_c
     }
 
     int iter = 1;
-    if (A_rows == 20) iter = 10000;
-    if (A_rows == 100) iter = 100;
+    if (A_rows == 20) iter = 100000;
+    else if (A_rows == 100) iter = 1000;
+    else if (A_rows == 500) iter = 10;
+    else if (A_rows == 5) iter = 100000;
+    else if (A_rows == 105) iter = 100;
+    else if (A_rows == 10) iter = 1000;
     clock_t start, end;
     start = clock();
 
@@ -303,7 +307,11 @@ void *multiply(void *arg) {
 
     int iter = 1;
     if (A_rows == 20) iter = 100000;
-    if (A_rows == 100) iter = 1000;
+    else if (A_rows == 100) iter = 1000;
+    else if (A_rows == 500) iter = 10;
+    else if (A_rows == 5) iter = 100000;
+    else if (A_rows == 105) iter = 100;
+    else if (A_rows == 10) iter = 1000;
 
     if (data->tid == 0) printf("Number of iterations: %i\n", iter);
 
@@ -391,7 +399,7 @@ float **matmul_multithread(
     printf("A: %i x %i\nB: %i x %i\n", A_rows, A_cols, B_rows, B_cols);
     printf("Actual run time used: %f seconds\n", run_time);
     printf("Total thread time used: %f seconds\n", (double)(end - start) / CLOCKS_PER_SEC);
-    printf("Average thread time used: %f seconds\n", (double)(end - start) / CLOCKS_PER_SEC / num_threads);
+    printf("Potential actual thread time: %f seconds\n", (double)(end - start) / CLOCKS_PER_SEC / num_threads);
 
     return C;
 }

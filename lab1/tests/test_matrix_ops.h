@@ -13,13 +13,13 @@ void test_matmul(void);
 #ifndef PROFILING
 void test_matmul_large(void);
 #else
-void test_matmul_large(int threads);
+void test_matmul_large(int threads, int fn);
 #endif
 
 #ifndef PROFILING
 void test_matmul_random(void);
 #else
-void test_matmul_random(int threads, int size);
+void test_matmul_random(int threads, int size, int fn);
 #endif
 
 #ifndef PROFILING
