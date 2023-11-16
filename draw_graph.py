@@ -16,25 +16,25 @@ def draw_0():
     # ])
 
     values.append([
-        [ 0.5,  2.2,  4.3,  5.5,  5.6,  5.7,  5.5,  5.3,  4.4,  1.2],
-        [ 0.5, 15.6, 32.5, 43.2, 43.5, 41.0, 37.1, 32.0, 24.8,  3.3],
-        [ 4.2, 15.3, 13.9, 14.1, 19.0, 22.0, 24.2, 25.8, 28.3, 34.6],
-        [92.9, 66.6, 49.3, 37.1, 31.9, 31.4, 33.3, 36.9, 42.6, 57.0],
+        [ 4.0,  0.5,  4.2,  3.3,  4.4,  3.0,  5.1,  3.6,  4.5,  3.2,  4.6,  3.3,  4.2,  2.9],
+        [ 6.2,  0.5,  2.1,  1.6,  0.4,  0.3,  0.3,  0.2,  0.2,  0.2,  1.6,  1.4,  0.2,  0.2],
+        [59.9,  6.6, 15.2,  3.8, 28.3, 22.6, 17.4,  7.2, 28.5, 19.5, 24.9, 11.8, 32.7, 28.9],
+        [29.9, 92.4, 78.5, 91.2, 67.0, 74.1, 77.1, 89.0, 66.8, 77.2, 68.9, 83.5, 62.8, 68.1],
     ])
 
-    values.append([
-        [ 3.3,  3.6,  5.5,  6.2,  6.2,  6.3,  6.6,  6.7,  7.1,  7.3],
-        [ 1.7, 26.8, 41.6, 47.8, 47.3, 44.5, 43.1, 42.6, 41.8, 41.1],
-        [ 4.2, 13.5, 12.2, 14.1, 18.8, 22.7, 24.2, 24.8, 25.2, 25.3],
-        [90.8, 55.7, 40.6, 31.9, 27.7, 26.5, 26.2, 26.0, 25.8, 26.6],
-    ])
+    # values.append([
+    #     [ 3.3,  3.6,  5.5,  6.2,  6.2,  6.3,  6.6,  6.7,  7.1,  7.3],
+    #     [ 1.7, 26.8, 41.6, 47.8, 47.3, 44.5, 43.1, 42.6, 41.8, 41.1],
+    #     [ 4.2, 13.5, 12.2, 14.1, 18.8, 22.7, 24.2, 24.8, 25.2, 25.3],
+    #     [90.8, 55.7, 40.6, 31.9, 27.7, 26.5, 26.2, 26.0, 25.8, 26.6],
+    # ])
 
-    values.append([
-        [ 2.7,  3.9,  5.8,  6.6,  6.4,  6.5,  6.8,  7.3,  7.7,  8.1],
-        [ 0.5, 27.4, 42.4, 49.3, 48.2, 45.1, 43.7, 43.3, 42.7, 41.7],
-        [26.7, 13.3, 11.7, 13.5, 18.8, 22.8, 24.3, 24.7, 25.3, 25.9],
-        [70.3, 55.4, 40.1, 30.6, 26.6, 25.6, 25.2, 24.7, 24.3, 24.4],
-    ])
+    # values.append([
+    #     [ 2.7,  3.9,  5.8,  6.6,  6.4,  6.5,  6.8,  7.3,  7.7,  8.1],
+    #     [ 0.5, 27.4, 42.4, 49.3, 48.2, 45.1, 43.7, 43.3, 42.7, 41.7],
+    #     [26.7, 13.3, 11.7, 13.5, 18.8, 22.8, 24.3, 24.7, 25.3, 25.9],
+    #     [70.3, 55.4, 40.1, 30.6, 26.6, 25.6, 25.2, 24.7, 24.3, 24.4],
+    # ])
 
     # values.append([
     #     [13.3, 10.8, 0.3],
@@ -52,9 +52,9 @@ def draw_0():
 
     labels = ['Frontend bound', 'Bad speculation', 'Backend bound', 'Retiring']
     categories = []
+    categories.append(['20x30', 'Matmul 20x30', '100x105', 'Matmul 100x105', '500x505', 'Matmul 500x505', '5x1000', 'Matmul 5x1000', '105x1000', 'Matmul 105x1000', '1000x10', 'Matmul 1000x10', '1000x1005', 'Matmul 1000x1005'])
     # categories.append(['Matmul', '1', '2', '4', '8', '16', '32', '64', '128', '256'])
     # categories.append(['Matmul', '1', '2', '4', '8', '16', '32', '64', '128'])
-    categories.append(['Matmul', '0.1', '0.2', '0.3', '0.4', '0.5', '0.6', '0.7', '0.8', '0.9'])
     # categories.append(['Convolution 1', 'Convolution 2', 'Convolution 3'])
     # categories.append(['Relu 1', 'Relu 2', 'Relu 3'])
     # categories.append(['Linear 1', 'Linear 2', 'Linear 3'])
@@ -62,7 +62,7 @@ def draw_0():
     # categories.append(['Softmax 1', 'Softmax 2', 'Softmax 3'])
 
     # num = 2
-    titles = ["20x20 matrix", "100x100 matrix", "1000x1000 matrix"]
+    # titles = ["20x20 matrix", "100x100 matrix", "1000x1000 matrix"]
     for num in range(1):
         # Initialize the starting positions for the bars
         bar_position = np.arange(len(categories[0]))
@@ -70,8 +70,8 @@ def draw_0():
         # Width of each bar
         bar_width = 0.4
 
-        # Create a stacked bar chart with 6 bars
-        bottom = np.zeros(len(categories[0]))  # Initialize the bottom values
+        # Create a stacked bar chart and initialize the bottom values
+        bottom = np.zeros(len(categories[0]))
 
         for i, vals in enumerate(values[num]):
             plt.barh(
@@ -85,11 +85,12 @@ def draw_0():
             bottom += np.array(vals)
 
         # Set labels, title, and legend
-        plt.title(f'Profiling matmul_sparse {titles[num]}')
+        plt.title('Profiling matmul_multithreaded')
         plt.xlabel('Pipeline bottleneck breakdown (%)')
-        plt.ylabel('Block Size')
+        plt.ylabel('Matrix size')
         plt.yticks(bar_position, categories[0])
         plt.legend(bbox_to_anchor=(0.8, 1), loc=2, borderaxespad=0.)
+        plt.tight_layout()
 
         fig = plt.gcf()
         fig.set_size_inches(8, 5)  # Adjust the width and height as needed
@@ -100,36 +101,31 @@ def draw_0():
 def draw_1():
 
     blocks = []
-    blocks.append(['matmul', 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9])
-    blocks.append(['matmul', 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9])
-    blocks.append(['matmul', 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9])
+    blocks.append(['20x30', '100x105', '500x505', '5x1000', '105x1000', '1000x10', '1000x1005'])
+    # blocks.append(['matmul', 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9])
+    # blocks.append(['matmul', 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9])
 
     time = []
 
-    # 13.364708
-    time.append([13.364708, 11.113602, 13.119845, 16.288636, 13.728372, 11.259597, 8.935291, 7.042263, 4.709917, 2.748128])
-    # time.append([17.067618, 10.092189, 8.261456, 7.423858, 7.175499, 7.281390, 7.182765, 7.337385, 7.750841])
-    # 0.656898
-    time.append([0.656898, 1.088363, 1.143518, 1.301299, 1.215436, 1.193215, 0.795020, 0.633177, 0.565055, 0.288351])
-    # time.append([1.499448, 0.962579, 0.838493, 0.782889, 0.747891, 0.758775, 0.743087, 0.728936])
-    # 0.741843
-    time.append([0.741843, 0.736861, 0.955316, 1.028136, 0.841390, 0.505078, 0.392630, 0.277656, 0.175522, 0.105911])
-    # time.append([1.766454, 1.110912, 0.973923, 0.898500, 0.858309, 0.860491])
+    time.append([2.536586, 0.75969, 0.858916, 11.098748, 0.764562, 0.11091, 0.711949])
+    time.append([12.706165, 4.770022, 6.641347, 11.099992, 5.754170, 0.77899, 5.626767])
+    time.append([7.533303, 6.592938, 9.716597, 16.022553, 7.807468, 0.79470, 8.311039])
 
-    titles = ["1000x1000 matrix", "100x100 matrix", "20x20 matrix"]
-
-    for i in range(3):
+    for i in range(1):
         # Initialize the starting positions for the bars
-        plt.plot(blocks[i], time[i], marker='o', linestyle='-')
+        plt.plot(blocks[0], time[0], marker='o', linestyle='-', label='Multithreaded time')
+        plt.plot(blocks[0], time[1], marker='o', linestyle='-', label='Total thread time')
+        plt.plot(blocks[0], time[2], marker='o', linestyle='-', label='Matmul time')
 
         # Set labels for the x-axis and y-axis
-        plt.xlabel('Sparsity ratio')
+        plt.xlabel('Matrix dimension')
         plt.ylabel('Time (seconds)')
 
         # Add a title to the plot
-        plt.title(f'Execution Time vs. Matrix Sparcity ({titles[i]})')
+        plt.title('matmul runtimes')
 
         # Display the plot
+        plt.legend()
         plt.grid(True)
         plt.show()
 
