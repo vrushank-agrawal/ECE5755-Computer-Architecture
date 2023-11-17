@@ -237,8 +237,11 @@ void test_matmul_random(int threads, int size, int fn)
     } else if (size == 10) {
         i = 1000;
         a = 10;
+    } else if (size == 20) {
+        i = 20;
+        a = 30;
     } else {
-        i = 1000;
+        i = 1001;
         a = 1005;
     }
 

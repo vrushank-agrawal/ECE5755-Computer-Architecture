@@ -107,14 +107,14 @@ def draw_1():
 
     time = []
 
-    time.append([2.536586, 0.75969, 0.858916, 11.098748, 0.764562, 0.11091, 0.711949])
-    time.append([12.706165, 4.770022, 6.641347, 11.099992, 5.754170, 0.77899, 5.626767])
-    time.append([7.533303, 6.592938, 9.716597, 16.022553, 7.807468, 0.79470, 8.311039])
+    time.append([1.533276, 0.967622, 1.289840, 7.398126, 0.998911, 0.923349, 1.568443])
+    time.append([7.426990, 6.532429, 9.625671, 7.402382, 7.430041, 6.823916, 11.191514])
+    time.append([5.185191, 4.258292, 6.864214, 10.195670, 4.708476, 4.173648, 6.310125])
 
     for i in range(1):
         # Initialize the starting positions for the bars
-        plt.plot(blocks[0], time[0], marker='o', linestyle='-', label='Multithreaded time')
-        plt.plot(blocks[0], time[1], marker='o', linestyle='-', label='Total thread time')
+        plt.plot(blocks[0], time[0], marker='o', linestyle='-', label='Single Thread time')
+        plt.plot(blocks[0], time[1], marker='o', linestyle='-', label='Total Thread time')
         plt.plot(blocks[0], time[2], marker='o', linestyle='-', label='Matmul time')
 
         # Set labels for the x-axis and y-axis
@@ -131,5 +131,5 @@ def draw_1():
 
 
 if __name__ == "__main__":
-    draw_0()
-    # draw_1()
+    # draw_0()
+    draw_1()

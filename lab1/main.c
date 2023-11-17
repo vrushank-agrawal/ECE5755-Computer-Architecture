@@ -28,7 +28,7 @@ int main(int argc, char **argv)
     int threads = atoi(argv[2]);
     int fn = atoi(argv[3]);
 
-    if (test < 0 || test > 6) {
+    if (test < 0 || test > 7) {
         printf("Invalid test\n");
         return 1;
     }
@@ -54,6 +54,8 @@ int main(int argc, char **argv)
     } else if (test == 5) {
         test_matmul_random(threads, 10, fn);
     } else if (test == 6) {
+        test_matmul_random(threads, 20, fn);
+    } else if (test == 7) {
         test_matmul_random(threads, 1000, fn);
     }
 
