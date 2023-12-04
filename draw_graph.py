@@ -130,6 +130,31 @@ def draw_1():
         plt.show()
 
 
+def draw_pie():
+    labels = ['linear', 'matmul', 'convolution_im2col', 'col2im', 'flatten', 'im2col', 'relu', 'init', 'rest']
+    # sizes = [88.27, 8.52, 1.10, 0.86, 0.73, 0.23, 0.16, 0.09, 0.04]
+    sizes = [85.84, 7.94, 2.34, 1.40, 1.25, 0.58, 0.37, 0.12, 0.16]
+    colors = ['#1f77b4', '#ff7f0e', '#2ca02c', '#d62728', '#9467bd', '#8c564b', '#e377c2', '#7f7f7f', '#bcbd22' ]
+
+    fig1, ax1 = plt.subplots()
+    wedges, texts, autotexts = ax1.pie(sizes, autopct=lambda p: '{:.1f}%'.format(p) if p >= 2 else '', shadow=False, startangle=90, colors=colors)
+
+    # Only display the percentage if it's >= 1%
+    for autotext in autotexts:
+        autotext.set_color('white')
+
+    # Add a legend with labels
+    plt.legend(labels, title="Functions", bbox_to_anchor=(0.8, 1), loc=2, borderaxespad=0.)
+
+    # Add title
+    # plt.title('gprof profiling baseline')
+    plt.title('gprof profiling optimized')
+
+    plt.tight_layout()
+    plt.show()
+
+
 if __name__ == "__main__":
     # draw_0()
     draw_1()
+    # draw_pie()
