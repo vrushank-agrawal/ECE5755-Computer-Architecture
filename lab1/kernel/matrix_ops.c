@@ -403,3 +403,108 @@ float **matmul_multithread(
 
     return C;
 }
+
+
+/***************************************************************/
+/**************************     LAB5      **********************/
+/***************************************************************/
+
+#include <xmmintrin.h>
+#include <emmintrin.h>
+// #include <x86intrin.h>
+
+float** simd_matmul(float **A, float **B, int A_rows, int A_cols, int B_rows, int B_cols) {
+
+    if (A_cols != B_rows) {
+        printf("Matrix dimensions incompatible for multiplication.\n");
+        return NULL;
+    }
+
+    float **C = (float **)malloc(A_rows * sizeof(float *));
+    for (int i = 0; i < A_rows; i++) {
+        C[i] = (float *)malloc(B_cols * sizeof(float));
+    }
+
+    clock_t start, end;
+    start = clock();
+
+    double a[A_rows][A_cols] __attribute__((aligned(16)));
+    double b[B_rows][B_cols] __attribute__((aligned(16)));
+    double c[A_rows][B_cols] __attribute__((aligned(16)));
+
+    for (int i = 0; i < A_rows; i++) {
+        for (int j = 0; j < A_cols; j++) {
+            a[i][j] = A[i][j];
+        }
+    }
+
+    for (int i = 0; i < B_rows; i++) {
+        for (int j = 0; j < B_cols; j++) {
+            b[i][j] = B[i][j];
+        }
+    }
+
+
+
+    int block_size = 16;
+
+    for (int i = 0; i < A_rows; i += block_size) {
+        for (int j = 0; j < B_cols; j += block_size) {
+            // Initialize the output to zero
+            for (int k = 0; k < B_rows; k += block_size) {
+                // multiply inside the block
+                for (int ii = i; ii < i + block_size && ii < A_rows; ii++) {
+                    for (int kk = k; kk < k + block_size && kk < B_rows; kk++) {
+                        for (int jj = j; jj < j + block_size && jj < B_cols; jj++) {
+
+                            __m128d result = _mm_loadu_pd(&c[ii][jj]);
+                            __m128d a_line  = _mm_loadu_pd(&a[ii][kk]);
+                            __m128d b_line0 = _mm_loadu_pd(&b[kk][jj+0]);
+                            __m128d b_line1 = _mm_loadu_pd(&b[kk][jj+1]);
+                            __m128d b_line2 = _mm_loadu_pd(&b[kk][jj+2]);
+                            __m128d b_line3 = _mm_loadu_pd(&b[kk][jj+3]);
+
+                            result = _mm_add_pd(result, _mm_mul_pd(_mm_shuffle_pd(a_line, a_line, 0x00), b_line0));
+                            result = _mm_add_pd(result, _mm_mul_pd(_mm_shuffle_pd(a_line, a_line, 0x55), b_line1));
+                            result = _mm_add_pd(result, _mm_mul_pd(_mm_shuffle_pd(a_line, a_line, 0xaa), b_line2));
+                            result = _mm_add_pd(result, _mm_mul_pd(_mm_shuffle_pd(a_line, a_line, 0xff), b_line3));
+
+                            _mm_store_pd(&c[ii][jj],result);
+
+                            // C[ii][jj] += (A[ii][kk] * B[kk][jj]);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    // for (int i = 0; i < A_rows; i++) {
+    //     for (int j = 0; j < B_cols; j++) {
+    //         __m128 sum = _mm_setzero_ps();
+    //         for (int k = 0; k < A_cols; k += 4) {
+    //             __m128 a = _mm_loadu_ps(&A[i][k]);
+    //             __m128 b = _mm_loadu_ps(&B[k][j]);
+    //             sum = _mm_add_ps(sum, _mm_mul_ps(a, b));
+    //         }
+
+    //         float *sum_arr = (float *)&sum;
+
+    //         C[i][j] = sum_arr[0] + sum_arr[1] + sum_arr[2] + sum_arr[3];
+
+    //         for (int k = A_cols - (A_cols % 4); k < A_cols; k++) {
+    //             C[i][j] += A[i][k] * B[k][j];
+    //         }
+
+    //     }
+    // }
+
+    end = clock();
+    double run_time = (double)(end - start);
+    double cpu_time = (run_time) / CLOCKS_PER_SEC;
+
+    printf("A: %i x %i\nB: %i x %i\n", A_rows, A_cols, B_rows, B_cols);
+    printf("Matmul SIMD CPU time used: %f seconds\n", cpu_time);
+
+    return C;
+}

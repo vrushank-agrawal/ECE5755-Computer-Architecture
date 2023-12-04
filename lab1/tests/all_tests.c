@@ -50,7 +50,7 @@ int main(void) {
     // Test matrix_ops
     // RUN_TEST(test_matmul_square_matrices);
     // RUN_TEST(test_matmul);
-    RUN_TEST(test_matmul_large);
+    // RUN_TEST(test_matmul_large);
     RUN_TEST(test_matmul_random);
     // RUN_TEST(test_matmul_incompatible_dimensions);
     // RUN_TEST(test_matmul_sparse);

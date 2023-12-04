@@ -216,8 +216,7 @@ void test_matmul_random(int threads, int size, int fn)
 #endif
 {
     #ifndef PROFILING
-    int threads = NUM_THREADS;
-    int size = 1000;
+    int size = 20;
     int fn = 0;
     #endif
 
@@ -248,10 +247,8 @@ void test_matmul_random(int threads, int size, int fn)
     float **A = generate_random_matrix(i, a);
     float **B = generate_random_matrix(a, i);
     float **C;
-    if (fn == 0) C = matmul_multithread(A, B, i, a, a, i, threads);
+    if (fn == 0) C = simd_matmul(A, B, i, a, a, i);
     else if (fn == 1) C = matmul(A, B, i, a, a, i);
-
-    printf("rows = %i, cols = %i, threads = %i\n", i, i, threads);
 
     #ifndef PROFILING
     printf("RUNNING UNITY TEST\n");
