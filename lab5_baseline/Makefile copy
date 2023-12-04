@@ -1,5 +1,5 @@
 CC = gcc
-CFLAGS = -I. -lm -msse3 -pg
+CFLAGS = -I. -lm
 
 HDF5_FLAGS = -I/usr/include/hdf5/serial -L/usr/lib/x86_64-linux-gnu/hdf5/serial -lhdf5
 COMMON_HDRS = lab5.h ./utils/data_utils.h ./kernel/conv.h ./kernel/functional.h ./kernel/matrix_ops.h ./kernel/linear.h ./kernel/nn.h
