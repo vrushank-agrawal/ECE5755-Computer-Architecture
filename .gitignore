@@ -53,3 +53,7 @@ dkms.conf
 
 # Remove docx files
 *.docx
+
+# Remove folders
+lab5_baseline/mnist_data/*
+lab5_baseline/model/*
