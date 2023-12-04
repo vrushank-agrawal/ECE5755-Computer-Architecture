@@ -38,7 +38,7 @@ int main(int argc, char *argv[])
         for (int j = 0; j < numReps; j++) {
             prediction = forwardPass(images[i], numChannels, conv1WeightsData, fc1WeightsData, fc2WeightsData, conv1BiasData, fc1BiasData, fc2BiasData);
         }
-        
+
         printf("Image: %d\tPrediction: %d\tLabel: %d\n", i, prediction, labels[i]);
         if (prediction == labels[i])
         {
