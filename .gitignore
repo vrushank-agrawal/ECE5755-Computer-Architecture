@@ -57,3 +57,8 @@ dkms.conf
 # Remove folders
 lab5_baseline/mnist_data/*
 lab5_baseline/model/*
+
+# Remove gcov files
+*.gcda
+*.gcno
+*.gcov
