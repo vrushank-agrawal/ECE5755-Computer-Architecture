@@ -101,28 +101,35 @@ def draw_0():
 def draw_1():
 
     blocks = []
-    blocks.append(['20x30', '100x105', '500x505', '5x1000', '105x1000', '1000x10', '1000x1005'])
-    # blocks.append(['matmul', 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9])
-    # blocks.append(['matmul', 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9])
+    blocks.append(["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", '11'])
+
+    # table = {
+    #       1  : "baseline",
+    #       2  : "tiling 16",
+    #       3  : "CSR matmul",
+    #       4  : "parallel matmul",
+    #       5  : "SIMD Linear",
+    #       6  : "SIMD Linear + tiling 16",
+    #       7  : "SIMD Linear + Parallel matmul",
+    #       8  : "SIMD Linear + SIMD matmul",
+    #       9  : "SIMD Linear + SIMD Parallel matmul",
+    #       10 : "SIMD Linear + CSR matmul",
+    #       11 :"SIMD Linear + CSR matmul + O2",
+    # }
 
     time = []
-
-    time.append([1.533276, 0.967622, 1.289840, 7.398126, 0.998911, 0.923349, 1.568443])
-    time.append([7.426990, 6.532429, 9.625671, 7.402382, 7.430041, 6.823916, 11.191514])
-    time.append([5.185191, 4.258292, 6.864214, 10.195670, 4.708476, 4.173648, 6.310125])
+    time.append([114.16, 115.61, 110.50, 124.42, 74.90, 70.57, 77.99, 70.66, 78.91, 68.88, 16.84])
 
     for i in range(1):
         # Initialize the starting positions for the bars
-        plt.plot(blocks[0], time[0], marker='o', linestyle='-', label='Single Thread time')
-        plt.plot(blocks[0], time[1], marker='o', linestyle='-', label='Total Thread time')
-        plt.plot(blocks[0], time[2], marker='o', linestyle='-', label='Matmul time')
+        plt.plot(blocks[0], time[0], marker='o', linestyle='-', label='Pipeline Run Time')
 
         # Set labels for the x-axis and y-axis
-        plt.xlabel('Matrix dimension')
+        plt.xlabel('Implementation number')
         plt.ylabel('Time (seconds)')
 
         # Add a title to the plot
-        plt.title('matmul runtimes')
+        plt.title('Pipeline run time')
 
         # Display the plot
         plt.legend()
