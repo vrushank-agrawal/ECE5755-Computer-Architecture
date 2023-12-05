@@ -13,7 +13,7 @@ float *linear(float *input, float **weights, float *biases, int inputSize, int o
 
 	float *output = malloc(outputSize * sizeof(*output));
 
-	// Original Implementation
+	// // Original Implementation
 	// for (int i = 0; i < outputSize; i++)
 	// {
 	//   output[i] = biases[i];
