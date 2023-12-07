@@ -2,7 +2,8 @@
   "files.associations": {
     "kernel.h": "c",
     "test_matrix_ops.h": "c",
-    "test_conv.h": "c"
+    "test_conv.h": "c",
+    "xmmintrin.h": "c"
   },
   "C_Cpp_Runner.cCompilerPath": "gcc",
   "C_Cpp_Runner.cppCompilerPath": "g++",
